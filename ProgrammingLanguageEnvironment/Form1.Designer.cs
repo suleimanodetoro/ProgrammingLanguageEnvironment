@@ -1,6 +1,6 @@
 ﻿namespace ProgrammingLanguageEnvironment
 {
-    partial class Form1
+    partial class CommandParserForm
     {
         /// <summary>
         ///  Required designer variable.
@@ -28,12 +28,70 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Text = "Form1";
+            multiLineCommand = new TextBox();
+            singleLineInput = new TextBox();
+            canvas = new PictureBox();
+            runButton = new Button();
+            ((System.ComponentModel.ISupportInitialize)canvas).BeginInit();
+            SuspendLayout();
+            // 
+            // multiLineCommand
+            // 
+            multiLineCommand.Location = new Point(12, 12);
+            multiLineCommand.Multiline = true;
+            multiLineCommand.Name = "multiLineCommand";
+            multiLineCommand.PlaceholderText = "Enter Multi-Line Commands Here";
+            multiLineCommand.Size = new Size(349, 302);
+            multiLineCommand.TabIndex = 0;
+            // 
+            // singleLineInput
+            // 
+            singleLineInput.Location = new Point(12, 347);
+            singleLineInput.Name = "singleLineInput";
+            singleLineInput.PlaceholderText = "Enter Single Line Commands Here";
+            singleLineInput.Size = new Size(349, 27);
+            singleLineInput.TabIndex = 1;
+            // 
+            // canvas
+            // 
+            canvas.BackColor = SystemColors.ActiveBorder;
+            canvas.Location = new Point(403, 12);
+            canvas.Name = "canvas";
+            canvas.Size = new Size(621, 302);
+            canvas.TabIndex = 2;
+            canvas.TabStop = false;
+            // 
+            // runButton
+            // 
+            runButton.Location = new Point(288, 468);
+            runButton.Name = "runButton";
+            runButton.Size = new Size(422, 29);
+            runButton.TabIndex = 3;
+            runButton.Text = "Run";
+            runButton.UseVisualStyleBackColor = true;
+            // 
+            // CommandParserForm
+            // 
+            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(1036, 568);
+            Controls.Add(runButton);
+            Controls.Add(canvas);
+            Controls.Add(singleLineInput);
+            Controls.Add(multiLineCommand);
+            Name = "CommandParserForm";
+            Text = "Command Parser Form";
+            Load += Form1_Load;
+            ((System.ComponentModel.ISupportInitialize)canvas).EndInit();
+            ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
+
+        private TextBox multiLineCommand;
+        private TextBox singleLineInput;
+        private PictureBox canvas;
+        private Button runButton;
     }
 }

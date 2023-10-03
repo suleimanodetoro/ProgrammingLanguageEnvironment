@@ -1,10 +1,15 @@
 namespace ProgrammingLanguageEnvironment
 {
-    public partial class Form1 : Form
+    public partial class CommandParserForm : Form
     {
-        public Form1()
+        public CommandParserForm()
         {
             InitializeComponent();
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }
