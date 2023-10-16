@@ -19,6 +19,7 @@ namespace ProgrammingLanguageEnvironment
 
                 switch (commandName)
                 {
+
                     case "moveto":
                         string[] moveArgs = parts[1].Split(',');
                         int x = int.Parse(moveArgs[0].Trim());
