@@ -34,5 +34,60 @@ namespace ProgrammingLanguageEnvironment
             currentPosition = target;
         }
 
+        public void DrawCircle(int radius)
+        {
+            Brush brush = new SolidBrush(currentColor);
+            //implement filled shapes requirement
+            if (fillShapes)
+            {
+                graphics.FillEllipse(brush, currentPosition.X - radius, currentPosition.Y - radius, 2 * radius, 2 * radius);
+            } else
+            {
+                graphics.DrawEllipse(new Pen(brush), currentPosition.X - radius, currentPosition.Y - radius, 2 * radius, 2 * radius);
+            }
+        }
+
+        public void SetPenColor (Color color)
+        {
+            currentColor = color;
+        }
+
+        public void SetFill ( bool fill)
+        {
+            fillShapes = fill;
+        }
+
+        public void Clear()
+        {
+            graphics.Clear(canvas.BackColor);
+        }
+
+        public void ExecuteCommands( List<ICommand> commands)
+        {
+            foreach (var command in commands) 
+            {
+                //For each command, clear the pointer (so we can move it)
+                ClearPointer();
+                //execute method of each command object is called
+                command.Execute(this);
+                DrawPointer();
+
+            }
+        }
+        public void DrawPointer()
+        {
+            graphics.FillEllipse(Brushes.Red, currentPosition.X - POINTER_SIZE / 2, currentPosition.Y - POINTER_SIZE / 2, POINTER_SIZE, POINTER_SIZE);
+        }
+
+        public void ClearPointer()
+        {
+            graphics.FillEllipse(new SolidBrush(canvas.BackColor), currentPosition.X - POINTER_SIZE / 2, currentPosition.Y - POINTER_SIZE / 2, POINTER_SIZE, POINTER_SIZE);
+        }
+
+        public void Dispose ()
+        {
+            graphics?.Dispose();
+        }
+
     }
 }

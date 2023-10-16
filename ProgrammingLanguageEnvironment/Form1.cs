@@ -2,17 +2,19 @@ namespace ProgrammingLanguageEnvironment
 {
     public partial class CommandParserForm : Form
     {
+
+        private CommandParser commandParser;
+        private CanvasRenderer canvasRenderer;
         public CommandParserForm()
         {
             InitializeComponent();
             //On Run Button Press event, execute function
             runButton.Click += RunButton_Click;
             
-            //
-/*            //create new instance of Command Parser
+            //create new instance of Command Parser
             commandParser = new CommandParser();
             // create new instance of canvas renderer
-            canvasRenderer = new CanvasRenderer(canvas);*/  
+            canvasRenderer = new CanvasRenderer(canvas);
 
 
         }
@@ -23,12 +25,15 @@ namespace ProgrammingLanguageEnvironment
             string commands = multiLineCommand.Text + Environment.NewLine + singleLineInput.Text;
 
             // store parsed commands
+            var parsedCommands = commandParser.ParseCommands(commands);
 
             //log parsed commands
             foreach(var cmd in parsedCommands)
             {
                 Console.WriteLine(cmd.ToString());
             }
+
+            canvasRenderer.EXECU
         
 
         }
