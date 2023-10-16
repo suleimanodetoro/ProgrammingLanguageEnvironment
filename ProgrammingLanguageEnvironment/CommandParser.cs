@@ -35,6 +35,12 @@ namespace ProgrammingLanguageEnvironment
                         string color = parts[1].ToLower();
                         commands.Add(new PenCommand(color));
                         break;
+                    case "drawto":
+                        string[] drawArgs = parts[1].Split(",");
+                        int endX = int.Parse(drawArgs[0].Trim());
+                        int endY = int.Parse(drawArgs[1].Trim());
+                        commands.Add(new DrawToCommand(endX, endY));    
+                        break;
                     default:
                         //handle errors later haha
                         break;
