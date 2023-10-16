@@ -15,11 +15,13 @@ namespace ProgrammingLanguageEnvironment
             commandParser = new CommandParser();
             // create new instance of canvas renderer
             canvasRenderer = new CanvasRenderer(canvas);
+            //Draw initial pointer - buggy
+            canvasRenderer.DrawPointer();
 
 
         }
 
-        private void RunButton_Click(object sender, EventArgs e)
+        private void RunButton_Click(object? sender, EventArgs e)
         {
             //store command strings from multi line and single line input
             string commands = multiLineCommand.Text + Environment.NewLine + singleLineInput.Text;
@@ -33,7 +35,7 @@ namespace ProgrammingLanguageEnvironment
                 Console.WriteLine(cmd.ToString());
             }
 
-            canvasRenderer.EXECU
+            canvasRenderer.ExecuteCommands(parsedCommands);
         
 
         }
