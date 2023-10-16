@@ -42,6 +42,10 @@ namespace ProgrammingLanguageEnvironment
                         int endY = int.Parse(drawArgs[1].Trim());
                         commands.Add(new DrawToCommand(endX, endY));    
                         break;
+                    case "fill":
+                        string fillOption = parts[1].ToLower();
+                        commands.Add(new FillCommand(fillOption));
+                        break;
                     default:
                         //handle errors later haha
                         break;

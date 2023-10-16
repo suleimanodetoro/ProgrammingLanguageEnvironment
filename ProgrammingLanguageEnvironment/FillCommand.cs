@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ProgrammingLanguageEnvironment
 {
-    public class FillCommand
+    public class FillCommand: ICommand
     {
         public bool IsFillEnabled { get; }
 
