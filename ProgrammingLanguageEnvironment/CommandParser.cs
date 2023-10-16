@@ -24,10 +24,16 @@ namespace ProgrammingLanguageEnvironment
                         int x = int.Parse(moveArgs[0].Trim());
                         int y = int.Parse(moveArgs[1].Trim());
                         //implement moveto command class
+                        commands.Add(new MoveToCommand(x, y));
                         break;
                     case "circle":
                         int radius = int.Parse(parts[1]);
                         //implement circle command class
+                        commands.Add(new CircleCommand(radius));
+                        break;
+                    case "pen":
+                        string color = parts[1].ToLower();
+                        commands.Add(new PenCommand(color));
                         break;
                     default:
                         //handle errors later haha

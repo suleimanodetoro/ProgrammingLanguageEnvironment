@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows.Forms;
 using System.Threading.Tasks;
 
 namespace ProgrammingLanguageEnvironment
@@ -45,6 +46,12 @@ namespace ProgrammingLanguageEnvironment
             {
                 graphics.DrawEllipse(new Pen(brush), currentPosition.X - radius, currentPosition.Y - radius, 2 * radius, 2 * radius);
             }
+        }
+
+        public void DrawLine(Point endPoint)
+        {
+            graphics.DrawLine(new Pen(currentColor), currentPosition, endPoint);
+            currentPosition = endPoint;  // Update the current point to the end of the line
         }
 
         public void SetPenColor (Color color)
