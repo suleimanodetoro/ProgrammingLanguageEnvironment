@@ -96,7 +96,7 @@ namespace ProgrammingLanguageEnvironment
             fillShapes = fill;
         }
 
-        public void Clear()
+        public void ClearCanvas()
         {
             graphics.Clear(canvas.BackColor);
         }
