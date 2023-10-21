@@ -46,6 +46,16 @@ namespace ProgrammingLanguageEnvironment
                         string fillOption = parts[1].ToLower();
                         commands.Add(new FillCommand(fillOption));
                         break;
+                    case "rect":
+                        string[] rectArgs = parts[1].Split(',');
+                        int width = int.Parse(rectArgs[0].Trim());
+                        int height = int.Parse(rectArgs[1].Trim());
+                        commands.Add(new RectCommand(width, height));
+                        break;
+                    case "tri":
+                        /*int side = int.Parse(parts[1]);
+                        commands.Add(new TriangleCommand(side))*/;
+                        break;
                     default:
                         //handle errors later haha
                         break;

@@ -54,6 +54,37 @@ namespace ProgrammingLanguageEnvironment
             currentPosition = endPoint;  // Update the current point to the end of the line
         }
 
+        public void DrawRectangle(int width, int height)
+        {
+            Brush brush = new SolidBrush(currentColor);
+            if (fillShapes)
+            {
+                graphics.FillRectangle(brush, currentPosition.X, currentPosition.Y, width, height);
+            }
+            else
+            {
+                graphics.DrawRectangle(new Pen(brush), currentPosition.X, currentPosition.Y, width, height);
+            }
+        }
+
+        public void DrawTriangle(int side)
+        {
+            Point[] triangleVertices = {
+            currentPosition,
+            new Point(currentPosition.X + side, currentPosition.Y),
+            new Point(currentPosition.X + side / 2, currentPosition.Y - (int)(Math.Sqrt(3) / 2 * side))
+        };
+            Brush brush = new SolidBrush(currentColor);
+            if (fillShapes)
+            {
+                graphics.FillPolygon(brush, triangleVertices);
+            }
+            else
+            {
+                graphics.DrawPolygon(new Pen(brush), triangleVertices);
+            }
+        }
+
         public void SetPenColor (Color color)
         {
             currentColor = color;
