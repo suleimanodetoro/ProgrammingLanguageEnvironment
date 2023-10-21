@@ -53,8 +53,8 @@ namespace ProgrammingLanguageEnvironment
                         commands.Add(new RectCommand(width, height));
                         break;
                     case "tri":
-                        /*int side = int.Parse(parts[1]);
-                        commands.Add(new TriangleCommand(side))*/;
+                        int side = int.Parse(parts[1]);
+                        commands.Add(new TriangleCommand(side));
                         break;
                     default:
                         //handle errors later haha
