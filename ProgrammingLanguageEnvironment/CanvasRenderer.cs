@@ -111,8 +111,22 @@ namespace ProgrammingLanguageEnvironment
 
         public void ClearCanvas()
         {
-            graphics.Clear(canvas.BackColor);
+            // Clear the main bitmap
+            graphics.Clear(canvas.BackColor); // same colour as before being cleared
+
+            // Clear the cursor bitmap (though I'll redraw the pointer immediately after)
+            using (Graphics cursorGraphics = Graphics.FromImage(cursorBitmap))
+            {
+                cursorGraphics.Clear(Color.Transparent);
+            }
+
+            // Redraw the pointer
+            DrawPointer();
+
+            // Refresh the canvas
+            canvas.Invalidate();
         }
+
 
         public void ExecuteCommands(List<ICommand> commands)
         {

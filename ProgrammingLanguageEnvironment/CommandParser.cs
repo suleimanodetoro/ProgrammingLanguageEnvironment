@@ -56,8 +56,9 @@ namespace ProgrammingLanguageEnvironment
                         int side = int.Parse(parts[1]);
                         commands.Add(new TriangleCommand(side));
                         break;
-                   /* case "clear":
-                        commands.Add(new )*/
+                    case "clear":
+                        commands.Add(new ClearCommand());
+                        break;
                     default:
                         //handle errors later haha
                         break;
