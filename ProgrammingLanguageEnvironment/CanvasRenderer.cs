@@ -21,19 +21,32 @@ namespace ProgrammingLanguageEnvironment
         private bool fillShapes = false;
         private const int POINTER_SIZE = 5;  // Size of the pointer
 
+        private Bitmap mainBitmap;
+        private Bitmap cursorBitmap;
 
         // When a new CanvasRenderer object is created, it's initialized with a reference to a PictureBox control. The Graphics object is then derived from this PictureBox.
         public CanvasRenderer(PictureBox canvas)
         {
             this.canvas = canvas;
-            this.graphics = canvas.CreateGraphics();
-/* DrawPointer method call has been removed, trying shown event for form handler to see if it fixes pointer not showing initially*/
+            this.mainBitmap = new Bitmap(canvas.Width, canvas.Height);
+            this.cursorBitmap = new Bitmap(canvas.Width, canvas.Height);
+            this.graphics = Graphics.FromImage(mainBitmap);
+            canvas.Paint += Canvas_Paint;
+            DrawPointer();
+            /* DrawPointer method call has been removed, trying shown event for form handler to see if it fixes pointer not showing initially*/
+        }
+
+        private void Canvas_Paint(object? sender, PaintEventArgs e)
+        {
+            e.Graphics.DrawImage(mainBitmap, 0, 0);
+            e.Graphics.DrawImage(cursorBitmap, 0, 0);
         }
 
         //MoveTo render tool
         public void MoveTo(Point target)
         {
             currentPosition = target;
+            DrawPointer();
         }
 
         public void DrawCircle(int radius)
@@ -101,21 +114,22 @@ namespace ProgrammingLanguageEnvironment
             graphics.Clear(canvas.BackColor);
         }
 
-        public void ExecuteCommands( List<ICommand> commands)
+        public void ExecuteCommands(List<ICommand> commands)
         {
-            foreach (var command in commands) 
+            foreach (var command in commands)
             {
-                //For each command, clear the pointer (so we can move it)
-                ClearPointer();
-                //execute method of each command object is called
                 command.Execute(this);
                 DrawPointer();
-
             }
         }
         public void DrawPointer()
         {
-            graphics.FillEllipse(Brushes.Red, 0, 0, POINTER_SIZE, POINTER_SIZE);
+            using (Graphics cursorGraphics = Graphics.FromImage(cursorBitmap))
+            {
+                cursorGraphics.Clear(Color.Transparent);
+                cursorGraphics.FillEllipse(Brushes.Red, currentPosition.X - POINTER_SIZE / 2, currentPosition.Y - POINTER_SIZE / 2, POINTER_SIZE, POINTER_SIZE);
+            }
+            canvas.Invalidate();
         }
 
         public void ClearPointer()
