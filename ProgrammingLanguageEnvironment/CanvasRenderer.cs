@@ -16,7 +16,7 @@ namespace ProgrammingLanguageEnvironment
         // The current color( Using the system's drawing class) that will be used for drawing. Initially set to black
         private Color currentColor = Color.Black;
         // currentPosition: The current position (or coordinates) on the canvas where the next shape or line will be drawn or start from.
-        private Point currentPosition;
+        private Point currentPosition = new Point(0,0); //Initial position of the point
         // fillShapes: A flag to determine if the shapes should be filled or just outlined.
         private bool fillShapes = false;
         private const int POINTER_SIZE = 5;  // Size of the pointer
@@ -27,6 +27,7 @@ namespace ProgrammingLanguageEnvironment
         {
             this.canvas = canvas;
             this.graphics = canvas.CreateGraphics();
+/* DrawPointer method call has been removed, trying shown event for form handler to see if it fixes pointer not showing initially*/
         }
 
         //MoveTo render tool
@@ -114,7 +115,7 @@ namespace ProgrammingLanguageEnvironment
         }
         public void DrawPointer()
         {
-            graphics.FillEllipse(Brushes.Red, currentPosition.X - POINTER_SIZE / 2, currentPosition.Y - POINTER_SIZE / 2, POINTER_SIZE, POINTER_SIZE);
+            graphics.FillEllipse(Brushes.Red, 0, 0, POINTER_SIZE, POINTER_SIZE);
         }
 
         public void ClearPointer()

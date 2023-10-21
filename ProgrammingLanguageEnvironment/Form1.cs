@@ -15,8 +15,8 @@ namespace ProgrammingLanguageEnvironment
             commandParser = new CommandParser();
             // create new instance of canvas renderer
             canvasRenderer = new CanvasRenderer(canvas);
-            //Draw initial pointer - buggy
-            canvasRenderer.DrawPointer();
+            this.Load += Form1_Load;
+            canvas.Paint += Canvas_Paint;
 
 
         }
@@ -40,9 +40,17 @@ namespace ProgrammingLanguageEnvironment
 
         }
 
+        //include breakpoint to verify if this works, CAUSE FIX DID NOT WORK!!!
         private void Form1_Load(object sender, EventArgs e)
         {
+            //Ensure pointer is drawn when the form loads
+            canvasRenderer.DrawPointer();
 
+        }
+
+        private void Canvas_Paint(object sender, PaintEventArgs e)
+        {
+            canvasRenderer.DrawPointer();
         }
     }
 }
