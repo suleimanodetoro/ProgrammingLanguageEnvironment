@@ -41,7 +41,7 @@ namespace ProgrammingLanguageEnvironment
                 case "clear":
                     return new ClearCommand();
                 default:
-                    throw new ArgumentException($"Unknown command: {commandName}");
+                    return null;
             }
         }
     }

@@ -8,65 +8,40 @@ namespace ProgrammingLanguageEnvironment
 {
     public class CommandParser
     {
-        public List<ICommand> ParseCommands(string commandText)
+        private CommandFactory commandFactory;
+
+        public CommandParser()
         {
-            List<ICommand> commands = new List<ICommand>();
-            string[] lines = commandText.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
-            foreach (string line in lines)
+            commandFactory = new CommandFactory();
+        }
+
+        public List<Command> ParseCommands(string rawInput)
+        {
+            var commands = new List<Command>();
+
+            // Split the input into individual lines/commands
+            var commandLines = rawInput.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+
+            foreach (var commandLine in commandLines)
             {
-                string[] parts = line.Split(' ');
-                string commandName = parts[0].ToLower();
-
-                switch (commandName)
+                try
                 {
-
-                    case "moveto":
-                        string[] moveArgs = parts[1].Split(',');
-                        int x = int.Parse(moveArgs[0].Trim());
-                        int y = int.Parse(moveArgs[1].Trim());
-                        //implement moveto command class
-                        commands.Add(new MoveToCommand(x, y));
-                        break;
-                    case "circle":
-                        int radius = int.Parse(parts[1]);
-                        //implement circle command class
-                        commands.Add(new CircleCommand(radius));
-                        break;
-                    case "pen":
-                        string color = parts[1].ToLower();
-                        commands.Add(new PenCommand(color));
-                        break;
-                    case "drawto":
-                        string[] drawArgs = parts[1].Split(",");
-                        int endX = int.Parse(drawArgs[0].Trim());
-                        int endY = int.Parse(drawArgs[1].Trim());
-                        commands.Add(new DrawToCommand(endX, endY));    
-                        break;
-                    case "fill":
-                        string fillOption = parts[1].ToLower();
-                        commands.Add(new FillCommand(fillOption));
-                        break;
-                    case "rect":
-                        string[] rectArgs = parts[1].Split(',');
-                        int width = int.Parse(rectArgs[0].Trim());
-                        int height = int.Parse(rectArgs[1].Trim());
-                        commands.Add(new RectCommand(width, height));
-                        break;
-                    case "tri":
-                        int side = int.Parse(parts[1]);
-                        commands.Add(new TriangleCommand(side));
-                        break;
-                    case "clear":
-                        commands.Add(new ClearCommand());
-                        break;
-                    case "reset":
-                        commands.Add(new ResetCommand());
-                        break;
-                    default:
-                        //handle errors later haha
-                        break;
+                    var command = commandFactory.CreateCommand(commandLine);
+                    if (command != null)
+                    {
+                        commands.Add(command);
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Warning: Unknown command \"{commandLine}\". Skipping...");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error processing command \"{commandLine}\": {ex.Message}");
                 }
             }
+
             return commands;
         }
     }
