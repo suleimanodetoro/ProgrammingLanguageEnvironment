@@ -18,22 +18,26 @@ namespace ProgrammingLanguageEnvironment
             switch (commandName)
             {
                 case "moveto":
-                    Point moveToTarget = new Point(int.Parse(args[0]), int.Parse(args[1]));
+                    var moveToArgs = args[0].Split(',');
+                    Point moveToTarget = new Point(int.Parse(moveToArgs[0]), int.Parse(moveToArgs[1]));
                     return new MoveToCommand(moveToTarget);
                 case "drawto":
-                    Point drawToEnd = new Point(int.Parse(args[0]), int.Parse(args[1]));
+                    var drawToArgs = args[0].Split(',');
+                    Point drawToEnd = new Point(int.Parse(drawToArgs[0]), int.Parse(drawToArgs[1]));
                     return new DrawToCommand(drawToEnd);
                 case "pen":
                     return new PenCommand(args[0]);
-                case "rectangle":
-                    int width = int.Parse(args[0]);
-                    int height = int.Parse(args[1]);
+                case "rect":
+                    var rectArgs = args[0].Split(',');
+                    int width = int.Parse(rectArgs[0]);
+                    int height = int.Parse(rectArgs[1]);
                     return new RectangleCommand(width, height);
                 case "circle":
                     int radius = int.Parse(args[0]);
                     return new CircleCommand(radius);
                 case "tri":
-                    return new TriangleCommand(args);
+                    int sideLength = int.Parse(args[0]);
+                    return new TriangleCommand(sideLength);
                 case "fill":
                     return new FillCommand(args[0] == "on");
                 case "reset":

@@ -10,12 +10,8 @@ namespace ProgrammingLanguageEnvironment
     {
         private readonly int sideLength;
 
-        public TriangleCommand(string[] parameters)
-        {
-            if (parameters.Length != 1 || !int.TryParse(parameters[0], out sideLength))
-            {
-                throw new ArgumentException("Invalid parameters for Triangle Command. Only takes one parameter");
-            }
+        public TriangleCommand(int sideLength)
+        {this.sideLength = sideLength;
         }
 
         public override void Execute(CanvasRenderer renderer)
