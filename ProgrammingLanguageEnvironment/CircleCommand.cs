@@ -6,17 +6,21 @@ using System.Threading.Tasks;
 
 namespace ProgrammingLanguageEnvironment
 {
-    public class CircleCommand: ICommand
+    public class CircleCommand : Command
     {
-        public int Radius {  get; }
+        private int radius;
 
         public CircleCommand(int radius)
         {
-            Radius = radius;
+            this.radius = radius;
         }
 
-        public void Execute(CanvasRenderer renderer) {
-            renderer.DrawCircle(Radius);
-                }
+        public int Radius => radius;
+
+        public override void Execute(CanvasRenderer renderer)
+        {
+            renderer.DrawCircle(radius);
+        }
     }
+
 }
