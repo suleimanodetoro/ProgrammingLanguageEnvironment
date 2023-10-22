@@ -127,6 +127,18 @@ namespace ProgrammingLanguageEnvironment
             canvas.Invalidate();
         }
 
+       
+        public void ResetPosition()
+        {
+            // Set the current position to the top-left corner
+            currentPosition = new Point(0, 0);
+
+            // Clear the pointer and redraw it at the new position
+            ClearPointer();
+            DrawPointer();
+        }
+
+
 
         public void ExecuteCommands(List<ICommand> commands)
         {

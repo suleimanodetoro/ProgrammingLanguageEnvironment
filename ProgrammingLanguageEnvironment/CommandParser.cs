@@ -59,6 +59,9 @@ namespace ProgrammingLanguageEnvironment
                     case "clear":
                         commands.Add(new ClearCommand());
                         break;
+                    case "reset":
+                        commands.Add(new ResetCommand());
+                        break;
                     default:
                         //handle errors later haha
                         break;
