@@ -158,6 +158,28 @@ namespace ProgrammingLanguageEnvironment
             canvas.Invalidate();
         }
 
+        public void DrawEquilateralTriangle(int sideLength)
+        {
+            double height = (Math.Sqrt(3) / 2) * sideLength;
+
+            Point[] triangleVertices = {
+                    currentPosition,
+                    new Point(currentPosition.X + sideLength, currentPosition.Y),
+                    new Point(currentPosition.X + sideLength / 2, currentPosition.Y - (int)height)
+            };
+
+            Brush brush = new SolidBrush(currentColor);
+            if (fillShapes)
+            {
+                graphics.FillPolygon(brush, triangleVertices);
+            }
+            else
+            {
+                graphics.DrawPolygon(new Pen(brush), triangleVertices);
+            }
+        }
+
+
         public void ClearPointer()
         {
             graphics.FillEllipse(new SolidBrush(canvas.BackColor), currentPosition.X - POINTER_SIZE / 2, currentPosition.Y - POINTER_SIZE / 2, POINTER_SIZE, POINTER_SIZE);

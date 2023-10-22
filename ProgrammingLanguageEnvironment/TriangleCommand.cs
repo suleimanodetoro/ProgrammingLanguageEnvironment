@@ -6,17 +6,22 @@ using System.Threading.Tasks;
 
 namespace ProgrammingLanguageEnvironment
 {
-    public class TriangleCommand : ICommand
+    public class TriangleCommand : Command
     {
-        public int SideLength { get; }
+        private readonly int sideLength;
 
-        public TriangleCommand(int side)
+        public TriangleCommand(string[] parameters)
         {
-            SideLength = side;
+            if (parameters.Length != 1 || !int.TryParse(parameters[0], out sideLength))
+            {
+                throw new ArgumentException("Invalid parameters for Triangle Command. Only takes one para");
+            }
         }
-        public void Execute(CanvasRenderer renderer)
+
+        public override void Execute(CanvasRenderer renderer)
         {
-            renderer.DrawTriangle(SideLength);
+            renderer.DrawEquilateralTriangle(sideLength);
         }
     }
+
 }
