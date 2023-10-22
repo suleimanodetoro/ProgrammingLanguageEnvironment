@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace ProgrammingLanguageEnvironment
 {
-    public class ResetCommand : ICommand
+    public class ResetCommand : Command
     {
-        public void Execute(CanvasRenderer renderer)
+        public override void Execute(CanvasRenderer renderer)
         {
-            renderer.ResetPosition();
+            renderer.MoveTo(new Point(0,0));
         }
     }
 }
