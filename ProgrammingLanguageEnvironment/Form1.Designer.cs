@@ -32,6 +32,7 @@
             singleLineInput = new TextBox();
             canvas = new PictureBox();
             runButton = new Button();
+            syntaxButton = new Button();
             ((System.ComponentModel.ISupportInitialize)canvas).BeginInit();
             SuspendLayout();
             // 
@@ -70,11 +71,23 @@
             runButton.Text = "Run";
             runButton.UseVisualStyleBackColor = true;
             // 
+            // syntaxButton
+            // 
+            syntaxButton.BackColor = SystemColors.MenuHighlight;
+            syntaxButton.Location = new Point(29, 468);
+            syntaxButton.Name = "syntaxButton";
+            syntaxButton.Size = new Size(147, 29);
+            syntaxButton.TabIndex = 4;
+            syntaxButton.Text = "SYNTAX";
+            syntaxButton.UseVisualStyleBackColor = false;
+            syntaxButton.Click += button1_Click;
+            // 
             // CommandParserForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1036, 568);
+            Controls.Add(syntaxButton);
             Controls.Add(runButton);
             Controls.Add(canvas);
             Controls.Add(singleLineInput);
@@ -93,5 +106,6 @@
         private TextBox singleLineInput;
         private PictureBox canvas;
         private Button runButton;
+        private Button syntaxButton;
     }
 }
