@@ -26,7 +26,7 @@ namespace ProgrammingLanguageEnvironment
             DrawPointer();
         }
 
-        private void Canvas_Paint(object sender, PaintEventArgs e)
+        private void Canvas_Paint(object? sender, PaintEventArgs e)
         {
             e.Graphics.DrawImage(mainBitmap, Point.Empty);
             e.Graphics.DrawImage(cursorBitmap, Point.Empty);
