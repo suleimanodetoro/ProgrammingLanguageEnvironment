@@ -19,5 +19,7 @@ namespace ProgrammingLanguageEnvironment
         {
             renderer.MoveTo(targetPosition);
         }
+        public Point TargetPosition => targetPosition;
+
     }
 }

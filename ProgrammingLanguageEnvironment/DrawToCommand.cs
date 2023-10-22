@@ -6,18 +6,20 @@ using System.Threading.Tasks;
 
 namespace ProgrammingLanguageEnvironment
 {
-    public class DrawToCommand : ICommand
+    public class DrawToCommand : Command
     {
-        public Point EndPoint { get; }
+        private Point endPoint;
 
-        public DrawToCommand(int x, int y)
+        public DrawToCommand(Point endPoint)
         {
-            EndPoint = new Point(x, y);
+            this.endPoint = endPoint;
         }
 
-        public void Execute(CanvasRenderer renderer)
+        public Point EndPoint => endPoint;
+
+        public override void Execute(CanvasRenderer renderer)
         {
-            renderer.DrawLine(EndPoint);
+            renderer.DrawLine(endPoint);
         }
     }
 }
