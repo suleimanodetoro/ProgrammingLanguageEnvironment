@@ -11,7 +11,10 @@ namespace ProgrammingLanguageEnvironment
         private readonly int sideLength;
 
         public TriangleCommand(int sideLength)
-        {this.sideLength = sideLength;
+        {
+            if (sideLength<= 0)
+                throw new InvalidParameterException("Side length cannot be negative or zero.");
+            this.sideLength = sideLength;
         }
 
         public override void Execute(CanvasRenderer renderer)

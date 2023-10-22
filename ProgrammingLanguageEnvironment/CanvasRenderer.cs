@@ -141,9 +141,9 @@ namespace ProgrammingLanguageEnvironment
         }
         public void DisplayTextOnCanvas(string message)
         {
-            using (var font = new Font("Arial", 12, FontStyle.Bold))
+            using (var font = new Font("Arial", 8, FontStyle.Bold))
             {
-                graphics.DrawString(message, font, Brushes.Red, new PointF(10, 10)); // Drawing at position (10,10) for demonstration.
+                graphics.DrawString(message, font, Brushes.Red, new PointF(0, 5)); // Drawing at position (10,10) for demonstration.
             }
             canvas.Invalidate();
         }

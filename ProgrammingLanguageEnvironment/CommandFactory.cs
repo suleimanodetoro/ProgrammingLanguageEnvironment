@@ -20,11 +20,13 @@ namespace ProgrammingLanguageEnvironment
                 case "moveto":
                     //if moveto command receive a single parameter (moveto 10) meaning it does not contain ',' throw an error. It could have have ',' but not have a second paramter too ( move to 100, )
                     if (args.Length < 1 || !args[0].Contains(','))
-                        throw new InvalidParameterException($"Invalid parameters for 'moveto'. Expected format: x,y but received: {String.Join(" ", args)}.");
+                        throw new InvalidParameterException($"Invalid parameters. Expected format: x,y, received: {String.Join(" ", args)}.");
                     var moveToArgs = args[0].Split(',');
+                    if (moveToArgs.Length != 2)
+                        throw new InvalidParameterException($"Invalid number of parameters for 'moveto'. Expected 2 but received {moveToArgs.Length}.");
                     //If it has two item seperated with ',' but the items given are invalid, throw error
                     if (!int.TryParse(moveToArgs[0], out int x) || !int.TryParse(moveToArgs[1], out int y))
-                        throw new InvalidParameterException($"Invalid coordinates provided for 'moveto'. Expected numbers but received: {args[0]}.");
+                        throw new InvalidParameterException($"Invalid coordinates provided for 'moveto'. Expected two numbers but received: {args[0]}.");
                     return new MoveToCommand(new Point(x, y));
 
 

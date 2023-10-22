@@ -24,22 +24,8 @@ namespace ProgrammingLanguageEnvironment
 
             foreach (var commandLine in commandLines)
             {
-                try
-                {
-                    var command = commandFactory.CreateCommand(commandLine);
-                    if (command != null)
-                    {
-                        commands.Add(command);
-                    }
-                    else
-                    {
-                        Console.WriteLine($"Warning: Unknown command \"{commandLine}\". Skipping...");
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Error processing command \"{commandLine}\": {ex.Message}");
-                }
+                var command = commandFactory.CreateCommand(commandLine);
+                commands.Add(command); // Directly add the command to the list without further checks.
             }
 
             return commands;

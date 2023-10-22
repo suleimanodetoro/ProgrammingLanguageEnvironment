@@ -13,6 +13,8 @@ namespace ProgrammingLanguageEnvironment
 
         public RectangleCommand(int width, int height)
         {
+            if (width <= 0 || height <= 0)
+                throw new InvalidParameterException("Width and height for the rectangle must be positive values.");
             this.width = width;
             this.height = height;
         }

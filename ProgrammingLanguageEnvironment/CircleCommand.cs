@@ -12,6 +12,9 @@ namespace ProgrammingLanguageEnvironment
 
         public CircleCommand(int radius)
         {
+            if (radius <= 0)
+                throw new InvalidParameterException($"Invalid radius for 'circle'. Radius must be positive. Received: {radius}");
+
             this.radius = radius;
         }
 
