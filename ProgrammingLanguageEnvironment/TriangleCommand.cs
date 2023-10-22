@@ -14,7 +14,7 @@ namespace ProgrammingLanguageEnvironment
         {
             if (parameters.Length != 1 || !int.TryParse(parameters[0], out sideLength))
             {
-                throw new ArgumentException("Invalid parameters for Triangle Command. Only takes one para");
+                throw new ArgumentException("Invalid parameters for Triangle Command. Only takes one parameter");
             }
         }
 

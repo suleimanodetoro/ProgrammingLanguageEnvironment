@@ -6,18 +6,21 @@ using System.Threading.Tasks;
 
 namespace ProgrammingLanguageEnvironment
 {
-    public class FillCommand: ICommand
+    public class FillCommand : Command
     {
-        public bool IsFillEnabled { get; }
+        private bool fillState;
 
-        public FillCommand(string fillOption)
+        public FillCommand(bool state)
         {
-            IsFillEnabled = fillOption.ToLower()=="on";
+            fillState = state;
         }
 
-        public void Execute(CanvasRenderer renderer)
+        public bool FillState => fillState;
+
+        public override void Execute(CanvasRenderer renderer)
         {
-            renderer.SetFill(IsFillEnabled);
+            renderer.SetFill(fillState);
         }
     }
+
 }
