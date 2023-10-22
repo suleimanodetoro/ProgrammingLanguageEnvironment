@@ -6,20 +6,24 @@ using System.Threading.Tasks;
 
 namespace ProgrammingLanguageEnvironment
 {
-    public class RectCommand: ICommand
+    public class RectangleCommand : Command
     {
+        private int width;
+        private int height;
 
-        public int Width { get; }
-        public int Height { get; }
-        public RectCommand(int width, int height) 
-        { 
-            Width = width;
-            Height = height;
+        public RectangleCommand(int width, int height)
+        {
+            this.width = width;
+            this.height = height;
         }
 
-        public void Execute(CanvasRenderer renderer) 
+        public int Width => width;
+        public int Height => height;
+
+        public override void Execute(CanvasRenderer renderer)
         {
-            renderer.DrawRectangle(Width, Height);
+            renderer.DrawRectangle(width, height);
         }
     }
+
 }
