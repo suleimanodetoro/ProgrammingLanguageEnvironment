@@ -6,18 +6,20 @@ using System.Threading.Tasks;
 
 namespace ProgrammingLanguageEnvironment
 {
-    public class PenCommand: ICommand
+    public class PenCommand: Command
     {
-      public Color PenColor { get; }
-        public PenCommand (string colorName)
+        private Color penColor;
+
+        public PenCommand(string colorName)
         {
-            //Convert string color name to System.Drawing.Color
-            PenColor = Color.FromName (colorName);
+            penColor = Color.FromName(colorName);
         }
 
-        public void Execute (CanvasRenderer renderer)
+        public Color PenColor => penColor;
+
+        public override void Execute(CanvasRenderer renderer)
         {
-            renderer.SetPenColor (PenColor);
+            renderer.SetPenColor(penColor);
         }
 
 
