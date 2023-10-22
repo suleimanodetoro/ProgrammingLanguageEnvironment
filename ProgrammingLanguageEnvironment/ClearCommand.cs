@@ -6,11 +6,12 @@ using System.Threading.Tasks;
 
 namespace ProgrammingLanguageEnvironment
 {
-    public class ClearCommand : ICommand
+    public class ClearCommand : Command
     {
-        public void Execute(CanvasRenderer renderer)
+        public override void Execute(CanvasRenderer renderer)
         {
             renderer.ClearCanvas();
         }
     }
+
 }
