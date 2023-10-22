@@ -6,17 +6,18 @@ using System.Threading.Tasks;
 
 namespace ProgrammingLanguageEnvironment
 {
-    public class MoveToCommand: ICommand
+    public class MoveToCommand: Command
     {
-        public Point Target { get; }
-        public MoveToCommand(int x,int y)
+        private Point targetPosition;
+
+        public MoveToCommand(Point target)
         {  
-            Target = new Point(x,y); 
+            this.targetPosition = target; 
         }
 
-        public void Execute(CanvasRenderer renderer)
+        public override void Execute(CanvasRenderer renderer)
         {
-            renderer.MoveTo(Target);
+            renderer.MoveTo(targetPosition);
         }
     }
 }
