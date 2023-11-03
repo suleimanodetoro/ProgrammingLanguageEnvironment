@@ -22,7 +22,7 @@ namespace ProgrammingLanguageEnvironment
 
         public Point EndPoint => endPoint;
 
-        public override void Execute(CanvasRenderer renderer)
+        public override void Execute(ICanvasRenderer renderer)
         {
             renderer.DrawLine(endPoint);
         }

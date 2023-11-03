@@ -8,7 +8,7 @@ namespace ProgrammingLanguageEnvironment
 {
     public class ResetCommand : Command
     {
-        public override void Execute(CanvasRenderer renderer)
+        public override void Execute(ICanvasRenderer renderer)
         {
             renderer.MoveTo(new Point(0,0));
         }

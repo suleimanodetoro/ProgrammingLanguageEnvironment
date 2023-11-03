@@ -51,7 +51,7 @@ namespace UnitTestPLE
         public void ParseCommands_InvalidParameters_ThrowsInvalidParameterException()
         {
             // Arrange
-            string input = "moveto invalidParam";
+            string input = "moveto 90";
 
             // Act
             _commandParser.ParseCommands(input); // Exception is expected to be thrown here

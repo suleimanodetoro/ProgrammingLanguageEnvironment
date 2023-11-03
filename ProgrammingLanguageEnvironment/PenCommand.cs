@@ -25,7 +25,7 @@ namespace ProgrammingLanguageEnvironment
 
         public Color PenColor => penColor;
 
-        public override void Execute(CanvasRenderer renderer)
+        public override void Execute(ICanvasRenderer renderer)
         {
             renderer.SetPenColor(penColor);
         }

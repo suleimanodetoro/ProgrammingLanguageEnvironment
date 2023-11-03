@@ -20,7 +20,7 @@ namespace ProgrammingLanguageEnvironment
             this.targetPosition = target; 
         }
 
-        public override void Execute(CanvasRenderer renderer)
+        public override void Execute(ICanvasRenderer renderer)
         {
             renderer.MoveTo(targetPosition);
         }

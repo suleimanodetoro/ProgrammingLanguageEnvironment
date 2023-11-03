@@ -17,7 +17,7 @@ namespace ProgrammingLanguageEnvironment
             this.sideLength = sideLength;
         }
 
-        public override void Execute(CanvasRenderer renderer)
+        public override void Execute(ICanvasRenderer renderer)
         {
             renderer.DrawEquilateralTriangle(sideLength);
         }

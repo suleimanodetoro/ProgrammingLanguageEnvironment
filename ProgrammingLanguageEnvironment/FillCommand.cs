@@ -17,7 +17,7 @@ namespace ProgrammingLanguageEnvironment
 
         public bool FillState => fillState;
 
-        public override void Execute(CanvasRenderer renderer)
+        public override void Execute(ICanvasRenderer renderer)
         {
             renderer.SetFill(fillState);
         }

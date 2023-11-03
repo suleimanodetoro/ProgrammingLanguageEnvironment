@@ -9,7 +9,6 @@ namespace ProgrammingLanguageEnvironment
 {
     public abstract class Command
     {
-        public abstract void Execute(CanvasRenderer renderer);
-
+        public abstract void Execute(ICanvasRenderer renderer);
     }
 }

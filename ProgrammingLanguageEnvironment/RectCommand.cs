@@ -22,7 +22,7 @@ namespace ProgrammingLanguageEnvironment
         public int Width => width;
         public int Height => height;
 
-        public override void Execute(CanvasRenderer renderer)
+        public override void Execute(ICanvasRenderer renderer)
         {
             renderer.DrawRectangle(width, height);
         }

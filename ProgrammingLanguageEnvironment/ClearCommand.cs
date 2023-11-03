@@ -8,7 +8,7 @@ namespace ProgrammingLanguageEnvironment
 {
     public class ClearCommand : Command
     {
-        public override void Execute(CanvasRenderer renderer)
+        public override void Execute(ICanvasRenderer renderer)
         {
             renderer.ClearCanvas();
         }

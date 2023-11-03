@@ -4,7 +4,24 @@ using System.Windows.Forms;
 
 namespace ProgrammingLanguageEnvironment
 {
-    public class CanvasRenderer
+    public interface ICanvasRenderer
+    {
+        void DrawPointer();
+        void ClearCanvas();
+        void MoveTo(Point target);
+        void DrawCircle(int radius);
+        void DrawLine(Point endPoint);
+        void DrawRectangle(int width, int height);
+        void DrawEquilateralTriangle(int sideLength);
+        void SetPenColor(Color color);
+        void SetFill(bool fill);
+        void ResetPosition();
+        void ExecuteCommands(List<Command> commands);
+        void DisplayTextOnCanvas(string message);
+        void Dispose();
+    }
+
+    public class CanvasRenderer: ICanvasRenderer
     {
         private PictureBox canvas;
         private Graphics graphics;
@@ -155,3 +172,5 @@ namespace ProgrammingLanguageEnvironment
         }
     }
 }
+
+

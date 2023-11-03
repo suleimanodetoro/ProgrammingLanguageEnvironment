@@ -20,7 +20,7 @@ namespace ProgrammingLanguageEnvironment
 
         public int Radius => radius;
 
-        public override void Execute(CanvasRenderer renderer)
+        public override void Execute(ICanvasRenderer renderer)
         {
             renderer.DrawCircle(radius);
         }
