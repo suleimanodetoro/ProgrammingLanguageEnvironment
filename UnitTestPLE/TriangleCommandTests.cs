@@ -19,7 +19,7 @@ namespace UnitTestPLE
             var triangleCommand = new TriangleCommand(sideLength);
 
             // Act & Assert
-            Assert.AreEqual(sideLength, typeof(TriangleCommand).GetProperty("SideLength").GetValue(triangleCommand));
+            Assert.AreEqual(sideLength, typeof(TriangleCommand)?.GetProperty("SideLength")?.GetValue(triangleCommand));
         }
 
         [TestMethod]
@@ -58,8 +58,5 @@ namespace UnitTestPLE
             // Assert is handled by ExpectedException
         }
 
-        // Additional tests could be written to check for specific triangle drawing behavior,
-        // such as the points where the triangle is drawn, but this would require more complex
-        // mocking or a real renderer implementation for verification.
     }
 }
