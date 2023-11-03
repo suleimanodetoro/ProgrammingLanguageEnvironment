@@ -16,6 +16,7 @@ namespace ProgrammingLanguageEnvironment
                 throw new InvalidParameterException("Side length cannot be negative or zero.");
             this.sideLength = sideLength;
         }
+        public int SideLength => sideLength; // Public getter for the side length - aid for testingggg
 
         public override void Execute(ICanvasRenderer renderer)
         {
