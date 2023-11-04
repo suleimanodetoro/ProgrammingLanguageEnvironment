@@ -9,6 +9,8 @@ namespace ProgrammingLanguageEnvironment
     public interface IFileService
     {
         void SaveCommandsToFile(string filePath, IEnumerable<string> commands);
+        IEnumerable<string> LoadCommandsFromFile(string filePath);
+
 
     }
 
@@ -19,6 +21,21 @@ namespace ProgrammingLanguageEnvironment
         {
             // Write all lines to the file
             File.WriteAllLines(filePath, commands);
+        }
+
+        //Load command to input box
+        public IEnumerable<string> LoadCommandsFromFile(string filePath)
+        {
+            try
+            {
+                // Read all lines from the file
+                return File.ReadAllLines(filePath);
+            }
+            catch (Exception ex)
+            {
+                // Handle any exceptions that might occur during file read
+                throw new ApplicationException("Error loading file: " + ex.Message, ex);
+            }
         }
     }
 }

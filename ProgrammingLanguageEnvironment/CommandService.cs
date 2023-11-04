@@ -38,7 +38,7 @@ namespace ProgrammingLanguageEnvironment
                 _canvasRenderer.ExecuteCommands(parsedCommands);
             }
 
-            public bool CheckSyntax(string commands, out string errorMessage)
+            public bool CheckSyntax(string commands, out string? errorMessage)
             {
             errorMessage = null;
             try
