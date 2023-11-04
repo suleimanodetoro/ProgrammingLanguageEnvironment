@@ -17,6 +17,12 @@ namespace ProgrammingLanguageEnvironment
 
         public List<Command> ParseCommands(string rawInput)
         {
+            // Check if the raw input is null, empty, or consists only of white-space characters
+            if (string.IsNullOrWhiteSpace(rawInput))
+            {
+                throw new ArgumentException("Input cannot be empty or whitespace.");
+            }
+
             var commands = new List<Command>();
 
             // Split the input into individual lines/commands
@@ -24,8 +30,9 @@ namespace ProgrammingLanguageEnvironment
 
             foreach (var commandLine in commandLines)
             {
+                // Assuming CreateCommand handles its own validation and may throw exceptions as needed
                 var command = commandFactory.CreateCommand(commandLine);
-                commands.Add(command); // Directly add the command to the list without further checks.
+                commands.Add(command); // Add the command to the list
             }
 
             return commands;
