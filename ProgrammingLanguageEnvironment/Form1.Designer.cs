@@ -46,8 +46,8 @@
             multiLineCommand.PlaceholderText = "Enter Multi-Line Commands Here";
             multiLineCommand.Size = new Size(349, 302);
             multiLineCommand.TabIndex = 0;
-            multiLineCommand.TextChanged += multiLineCommand_TextChanged;
-            // 
+/*            multiLineCommand.TextChanged += multiLineCommand_TextChanged;
+*/            // 
             // singleLineInput
             // 
             singleLineInput.Location = new Point(12, 347);
@@ -83,8 +83,8 @@
             syntaxButton.TabIndex = 4;
             syntaxButton.Text = "SYNTAX";
             syntaxButton.UseVisualStyleBackColor = false;
-            syntaxButton.Click += button1_Click;
-            // 
+/*            syntaxButton.Click += button1_Click;
+*/            // 
             // saveCodeButton
             // 
             saveCodeButton.Location = new Point(775, 468);
@@ -93,8 +93,8 @@
             saveCodeButton.TabIndex = 5;
             saveCodeButton.Text = "Save Code";
             saveCodeButton.UseVisualStyleBackColor = true;
-            saveCodeButton.Click += button1_Click_1;
-            // 
+/*            saveCodeButton.Click += button1_Click_1;
+*/            // 
             // loadCodeButton
             // 
             loadCodeButton.Location = new Point(902, 468);
@@ -103,8 +103,8 @@
             loadCodeButton.TabIndex = 6;
             loadCodeButton.Text = "Load Code";
             loadCodeButton.UseVisualStyleBackColor = true;
-            loadCodeButton.Click += button2_Click;
-            // 
+/*            loadCodeButton.Click += button2_Click;
+*/            // 
             // CommandParserForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -119,8 +119,8 @@
             Controls.Add(multiLineCommand);
             Name = "CommandParserForm";
             Text = "Command Parser Form";
-            Load += Form1_Load;
-            ((System.ComponentModel.ISupportInitialize)canvas).EndInit();
+/*            Load += Form1_Load;
+*/            ((System.ComponentModel.ISupportInitialize)canvas).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
