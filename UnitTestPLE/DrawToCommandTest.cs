@@ -10,9 +10,19 @@ using System.Threading.Tasks;
 
 namespace UnitTestPLE
 {
+    /// <summary>
+    /// Contains unit tests for the DrawToCommand class to verify its functionality.
+    /// </summary>
     [TestClass]
     public class DrawToCommandTests
     {
+        /// <summary>
+        /// Verifies that a DrawToCommand object is correctly created with the specified endpoint.
+        /// </summary>
+        /// <remarks>
+        /// This test ensures that the endpoint property of the created DrawToCommand object
+        /// matches the point provided to the constructor.
+        /// </remarks>
         [TestMethod]
         public void DrawToCommand_CorrectParameters_CreatesCommand()
         {
@@ -27,7 +37,12 @@ namespace UnitTestPLE
             Assert.AreEqual(point, drawToCommand.EndPoint);
         }
 
-        //
+        /// <summary>
+        /// Ensures that executing the DrawToCommand calls the DrawLine method on the renderer with the correct endpoint.
+        /// </summary>
+        /// <remarks>
+        /// This test uses mocking to intercept the call to the renderer and verify that DrawLine was called with the correct point.
+        /// </remarks>
         [TestMethod]
         public void DrawToCommand_Execute_CallsDrawLineWithCorrectEndPoint()
         {
@@ -46,6 +61,13 @@ namespace UnitTestPLE
             // Assert
             mockRenderer.Verify(r => r.DrawLine(endPoint), Times.Once());
         }
+
+        /// <summary>
+        /// Tests if constructing a DrawToCommand with negative coordinates throws an InvalidParameterException.
+        /// </summary>
+        /// <remarks>
+        /// This test case uses the ExpectedException attribute to indicate that the test passes if the specified exception is thrown.
+        /// </remarks>
 
         [TestMethod]
         [ExpectedException(typeof(InvalidParameterException))]
