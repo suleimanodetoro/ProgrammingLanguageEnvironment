@@ -7,9 +7,20 @@ using System.Threading.Tasks;
 
 namespace UnitTestPLE
 {
+    /// <summary>
+    /// Contains unit tests for the CommandFactory class to verify its ability to create command objects from string input.
+    /// </summary>
     [TestClass]
     public class CommandFactoryTests
     {
+
+        /// <summary>
+        /// Verifies that the CommandFactory creates a MoveToCommand object when provided with a valid input string for a MoveTo command.
+        /// </summary>
+        /// <remarks>
+        /// The test checks whether the factory correctly parses the 'moveto' command and its parameters,
+        /// and then creates an instance of the MoveToCommand with the appropriate properties set.
+        /// </remarks>
         //Create a test to check if a command (MoveTo in this case) is correctly mapped by the command factory
         [TestMethod]
         public void CommandFactory_CreatesMoveToCommand_ForValidMoveToInput()
@@ -37,7 +48,13 @@ namespace UnitTestPLE
             Assert.AreEqual(200, moveToCommand.TargetPosition.Y, "The Y coordinate of the MoveTo command should be 200.");
         }
 
-
+        /// <summary>
+        /// Tests that the CommandFactory throws an InvalidCommandException when it encounters an invalid command string.
+        /// </summary>
+        /// <remarks>
+        /// The test is designed to ensure that the factory's error handling is functioning correctly
+        /// by providing an input that does not correspond to any known command type.
+        /// </remarks>
         [TestMethod]
         [ExpectedException(typeof(InvalidCommandException), "A command with an invalid command name should throw an InvalidCommandException.")]
 
@@ -53,6 +70,6 @@ namespace UnitTestPLE
             // Assert
         }
 
-        // Additional tests later...
+        // Additional tests may be added later...
     }
 }
