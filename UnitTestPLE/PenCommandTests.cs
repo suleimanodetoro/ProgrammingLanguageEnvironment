@@ -9,11 +9,20 @@ using System.Threading.Tasks;
 
 namespace UnitTestPLE
 {
+    /// <summary>
+    /// Contains unit tests for the PenCommand class to ensure that it handles pen color changes correctly.
+    /// </summary>
     [TestClass]
     public class PenCommandTests
     {
 
-        // Test case for creating a PenCommand with a valid color.
+        /// <summary>
+        /// Tests whether a PenCommand is correctly instantiated with a valid color string.
+        /// </summary>
+        /// <remarks>
+        /// This test verifies that the PenCommand's PenColor property is set to the appropriate
+        /// Color structure based on a valid color name input.
+        /// </remarks>
         [TestMethod]
         public void PenCommand_ValidColor_CreatesCommandWithCorrectColor()
         {
@@ -28,7 +37,13 @@ namespace UnitTestPLE
         }
 
 
-        // Test case for ensuring an exception is thrown when an invalid color is provided.
+        /// <summary>
+        /// Tests that a PenCommand throws an InvalidParameterException when an invalid color name is provided.
+        /// It is not part of the defined allowed colors in the class
+        /// </summary>
+        /// <remarks>
+        /// The color 'purple' is used as a test case for an unsupported color name.
+        /// </remarks>
         [TestMethod]
         [ExpectedException(typeof(InvalidParameterException))]
         public void PenCommand_InvalidColor_ThrowsInvalidParameterException()
@@ -43,8 +58,12 @@ namespace UnitTestPLE
         }
 
 
-        // Test case for executing the PenCommand and verifying it calls the renderer with the correct color.
-
+        /// <summary>
+        /// Tests that executing the PenCommand correctly invokes the SetPenColor method on the ICanvasRenderer interface with the correct color.
+        /// </summary>
+        /// <remarks>
+        /// A mock of ICanvasRenderer is used to verify the interaction with the SetPenColor method when the PenCommand is executed.
+        /// </remarks>
         [TestMethod]
         public void PenCommand_Execute_CallsSetPenColorOnRendererWithCorrectColor()
         {
