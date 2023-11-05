@@ -8,10 +8,18 @@ using System.Threading.Tasks;
 
 namespace UnitTestPLE
 {
+    /// <summary>
+    /// Contains unit tests for the RectangleCommand class to ensure that rectangle commands are created and executed correctly.
+    /// </summary>
     [TestClass]
     public class RectCommandTests
     {
-        // Test to ensure that the constructor correctly assigns the width and height.
+        /// <summary>
+        /// Verifies that the RectangleCommand constructor correctly assigns the width and height parameters to properties.
+        /// </summary>
+        /// <remarks>
+        /// The test provides specific width and height values and asserts that the properties match these values after construction.
+        /// </remarks>
         [TestMethod]
         public void RectangleCommand_CorrectParameters_CreatesCommand()
         {
@@ -27,7 +35,12 @@ namespace UnitTestPLE
             Assert.AreEqual(testHeight, rectangleCommand.Height, "The height should match the expected value.");
         }
 
-        // Test to ensure that the Execute method calls the DrawRectangle method on the renderer with correct parameters.
+        /// <summary>
+        /// Ensures that executing the RectangleCommand invokes the DrawRectangle method on the ICanvasRenderer interface with the correct dimensions.
+        /// </summary>
+        /// <remarks>
+        /// A mock ICanvasRenderer is used to verify that DrawRectangle is called with the width and height specified when the command is executed.
+        /// </remarks>
         [TestMethod]
         public void RectangleCommand_Execute_CallsDrawRectangleWithCorrectParameters()
         {
