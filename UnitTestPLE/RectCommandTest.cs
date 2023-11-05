@@ -58,8 +58,12 @@ namespace UnitTestPLE
             mockRenderer.Verify(r => r.DrawRectangle(width, height), Times.Once(), "The DrawRectangle method should be called with the correct width and height.");
         }
 
-        // Test to ensure that the constructor throws an InvalidParameterException when negative values are passed.
-        [TestMethod]
+        /// <summary>
+        /// Tests that the RectangleCommand constructor throws an InvalidParameterException when provided with negative dimensions.
+        /// </summary>
+        /// <remarks>
+        /// Negative width or height values are invalid for rectangles, and the constructor must validate these inputs and throw accordingly.
+        /// </remarks>        [TestMethod]
         [ExpectedException(typeof(InvalidParameterException))]
         public void RectangleCommand_NegativeParameters_ThrowsInvalidParameterException()
         {
