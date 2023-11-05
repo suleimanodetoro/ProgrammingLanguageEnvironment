@@ -2,9 +2,13 @@ using ProgrammingLanguageEnvironment;
 
 namespace UnitTestPLE
 {
+    /// <summary>
+    /// Contains unit tests for the CommandFactory class to verify its ability to create command objects from string input.
+    /// </summary>
     [TestClass]
     public class CommandParserTests
     {
+        
         private CommandParser _commandParser;
 
         [TestInitialize]
@@ -14,7 +18,13 @@ namespace UnitTestPLE
         }
 
 
-        //Test for valid command (moveto for example)
+        /// <summary>
+        /// Verifies that the CommandFactory creates a MoveToCommand object when provided with a valid input string for a MoveTo command.
+        /// </summary>
+        /// <remarks>
+        /// The test checks whether the factory correctly parses the 'moveto' command and its parameters,
+        /// and then creates an instance of the MoveToCommand with the appropriate properties set.
+        /// </remarks>
 
         [TestMethod]
         public void ParseCommands_ValidCommand_ReturnsCommandList()
@@ -32,8 +42,13 @@ namespace UnitTestPLE
         }
 
 
-        //Test for unknown command 
-
+        /// <summary>
+        /// Tests that the CommandFactory throws an InvalidCommandException when it encounters an invalid command string.
+        /// </summary>
+        /// <remarks>
+        /// The test is designed to ensure that the factory's error handling is functioning correctly
+        /// by providing an input that does not correspond to any known command type.
+        /// </remarks>
         [TestMethod]
         [ExpectedException(typeof(InvalidCommandException))]
         public void ParseCommands_UnknownCommand_ThrowsInvalidCommandException()
