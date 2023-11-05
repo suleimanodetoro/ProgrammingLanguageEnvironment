@@ -8,9 +8,18 @@ using System.Threading.Tasks;
 
 namespace UnitTestPLE
 {
+    /// <summary>
+    /// Contains unit tests for the FillCommand class to verify its functionality.
+    /// </summary>
     [TestClass]
     public class FillCommandTests
     {
+        /// <summary>
+        /// Verifies that the FillCommand object's FillState property is set correctly upon instantiation.
+        /// </summary>
+        /// <remarks>
+        /// This test checks that the property value matches the boolean value passed to the constructor.
+        /// </remarks>
         // Tests if creating a FillCommand with a specific state correctly sets the property.
         [TestMethod]
         public void FillCommand_SetState_CorrectlySetsProperty()
@@ -25,6 +34,13 @@ namespace UnitTestPLE
             Assert.AreEqual(fillState, fillCommand.FillState, "The FillState property should match the value passed to the constructor.");
         }
 
+
+        /// <summary>
+        /// Ensures that executing the FillCommand calls the SetFill method on the renderer with the correct fill state.
+        /// </summary>
+        /// <remarks>
+        /// This test creates a mock ICanvasRenderer to verify that the SetFill method is called with the expected argument.
+        /// </remarks>
         [TestMethod]
         public void FillCommand_Execute_CallsSetFillWithCorrectState()
         {
