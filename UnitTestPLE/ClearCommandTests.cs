@@ -9,11 +9,20 @@ using System.Threading.Tasks;
 
 namespace UnitTestPLE
 {
+    /// <summary>
+    /// Contains unit tests for the ClearCommand class to verify its functionality.
+    /// </summary>        
     [TestClass]
     public class ClearCommandTests
     {
-        // Tests that the ClearCommand initializes correctly.
-        // Since the ClearCommand has no parameters, we only need to check if it is created successfully.
+       
+        /// <summary>
+        /// Verifies that the ClearCommand object initializes correctly.
+        /// </summary>
+        /// <remarks>
+        /// Since ClearCommand does not take any parameters upon initialization, the test
+        /// simply checks for the creation of the object.
+        /// </remarks>
         [TestMethod]
         public void ClearCommand_InitializesSuccessfully()
         {
@@ -24,8 +33,15 @@ namespace UnitTestPLE
             Assert.IsNotNull(clearCommand);
         }
 
-        // Tests that executing the ClearCommand calls the Clear method of the ICanvasRenderer interface.
-        // It verifies that this method is called exactly once when the command is executed.
+        /// <summary>
+        /// Tests that executing the ClearCommand results in a call to the ClearCanvas method
+        /// on an object implementing the ICanvasRenderer interface.
+        /// </summary>
+        /// <remarks>
+        /// This test confirms that the ClearCanvas method is invoked exactly once when
+        /// the ClearCommand's Execute method is called, ensuring the command's effect is
+        /// propagated to the renderer.
+        /// </remarks>
         [TestMethod]
         public void ClearCommand_Execute_CallsClearOnRenderer()
         {
