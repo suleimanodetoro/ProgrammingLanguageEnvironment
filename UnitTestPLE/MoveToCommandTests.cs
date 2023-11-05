@@ -9,9 +9,18 @@ using System.Threading.Tasks;
 
 namespace UnitTestPLE
 {
+    /// <summary>
+    /// Contains unit tests for the MoveToCommand class to verify its functionality.
+    /// </summary>
     [TestClass]
     public class MoveToCommandTests
     {
+        /// <summary>
+        /// Verifies that a MoveToCommand object initializes correctly with a given Point representing the target position.
+        /// </summary>
+        /// <remarks>
+        /// This test checks that the TargetPosition property of the MoveToCommand object is set correctly when instantiated.
+        /// </remarks>
         // Tests that the MoveToCommand initializes with a Point object representing the target position.
         // Asserts that the Point provided to the constructor is correctly assigned to the TargetPosition property.
         [TestMethod]
@@ -28,9 +37,12 @@ namespace UnitTestPLE
             Assert.AreEqual(targetPosition, moveToCommand.TargetPosition);
         }
 
-        // Tests that executing the MoveToCommand calls the MoveTo method of the ICanvasRenderer interface.
-        // It verifies that this method is called exactly once and with the correct Point parameter.
-        //
+        /// <summary>
+        /// Ensures that executing the MoveToCommand calls the MoveTo method on the renderer with the correct coordinates.
+        /// </summary>
+        /// <remarks>
+        /// This test uses a mock ICanvasRenderer to verify that the MoveTo method is called with the expected Point parameter.
+        /// </remarks>
         [TestMethod]
         public void MoveToCommand_Execute_CallsMoveToWithCorrectCoordinates()
         {
@@ -49,8 +61,12 @@ namespace UnitTestPLE
             mockRenderer.Verify(r => r.MoveTo(targetPosition), Times.Once());
         }
 
-        // Tests that the MoveToCommand throws an InvalidParameterException when initialized with negative coordinates.
-        // This exception should arise because negative coordinates are not valid for the MoveTo operation.
+        /// <summary>
+        /// Confirms that a MoveToCommand throws an InvalidParameterException when it is initialized with negative coordinates.
+        /// </summary>
+        /// <remarks>
+        /// Negative coordinates are invalid for the MoveTo operation, and the test ensures the class correctly handles such values.
+        /// </remarks>
         [TestMethod]
         [ExpectedException(typeof(InvalidParameterException))]
         public void MoveToCommand_WithNegativeCoordinates_ThrowsException()
@@ -60,7 +76,6 @@ namespace UnitTestPLE
             var moveToCommand = new MoveToCommand(new Point(-10, -20));
 
             // Assert: The assertion is implicit here. The [ExpectedException] attribute above the method declaration
-            // specifies the expected exception type. If that exception is not thrown, the test will fail.
         }
     }
 }
