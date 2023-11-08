@@ -29,7 +29,7 @@ namespace ProgrammingLanguageEnvironment
             switch (commandName)
             {
                 case "moveto":
-                    //if moveto command receive a single parameter (moveto 10) meaning it does not contain ',' throw an error. It could have have ',' but not have a second paramter too ( move to 100, )
+                    //if moveto command does not receive an arguement, or it does not contain ',' throw an error. It doesn't contain ',' so it does not have a second paramter too ( move to 100, )
                     if (args.Length < 1 || !args[0].Contains(','))
                         throw new InvalidParameterException($"Invalid parameters. Expected format: x,y, received: {String.Join(" ", args)}.");
                     var moveToArgs = args[0].Split(',');

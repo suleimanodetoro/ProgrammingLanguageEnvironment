@@ -82,18 +82,18 @@ namespace ProgrammingLanguageEnvironment
         /// <param name="errorMessage">When this method returns, contains the error message if the syntax is incorrect; otherwise, null.</param>
         /// <returns>True if the syntax is correct; otherwise, false.</returns>
         public bool CheckSyntax(string commands, out string? errorMessage)
-            {
+        {
             errorMessage = null;
             try
-            {
+        {
                 _commandParser.ParseCommands(commands);
                 return true; // Syntax is correct
-            }
+        }
             catch (Exception ex)
             {
                 errorMessage = ex.Message; // Capture the exception message
                 return false; // Syntax is incorrect
-            }
+        }
         }
 
         /// <summary>
