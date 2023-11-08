@@ -31,13 +31,20 @@ namespace ProgrammingLanguageEnvironment
 
 
                 case "drawto":
-                    // If 'drawto' command receives a single parameter (drawto 10) or does not contain ',' throw an error.
-                    if (args.Length < 1 || !args[0].Contains(','))
+                    // Check that only one argument is received and it contains a comma
+                    if (args.Length != 1 || !args[0].Contains(','))
                         throw new InvalidParameterException($"Invalid parameters for 'drawto'. Expected format: x,y but received: {String.Join(" ", args)}.");
+
+                    // Split the argument by the comma to separate X and Y coordinates
                     var drawToArgs = args[0].Split(',');
-                    // If two items separated by ',' are provided but are invalid, throw error.
+
+                    // Check if exactly two items are provided after splitting
+                    if (drawToArgs.Length != 2)
+                        throw new InvalidParameterException($"Invalid number of parameters for 'drawto'. Expected 2 but received {drawToArgs.Length}.");
+
+                    // Attempt to parse the X and Y coordinates
                     if (!int.TryParse(drawToArgs[0], out int endX) || !int.TryParse(drawToArgs[1], out int endY))
-                        throw new InvalidParameterException($"Invalid coordinates provided for 'drawto'. Expected numbers but received: {args[0]}.");
+                        throw new InvalidParameterException($"Invalid coordinates provided for 'drawto'. Expected two numbers but received: {args[0]}.");
                     return new DrawToCommand(new Point(endX, endY));
 
 

@@ -34,6 +34,7 @@ namespace ProgrammingLanguageEnvironment
                 var command = commandFactory.CreateCommand(commandLine);
                 commands.Add(command); // Add the command to the list
             }
+            Console.WriteLine("Command"+commands);
 
             return commands;
         }
