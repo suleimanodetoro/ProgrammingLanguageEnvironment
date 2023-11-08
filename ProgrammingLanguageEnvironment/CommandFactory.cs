@@ -6,8 +6,18 @@ using System.Threading.Tasks;
 
 namespace ProgrammingLanguageEnvironment
 {
+    /// <summary>
+    /// A factory for creating Command objects based on textual command lines.
+    /// </summary>
     public class CommandFactory
     {
+        /// <summary>
+        /// Creates a Command object based on a given command line.
+        /// </summary>
+        /// <param name="commandLine">The text representation of the command.</param>
+        /// <returns>A Command object corresponding to the given command line.</returns>
+        /// <exception cref="InvalidParameterException">Thrown when the command has invalid parameters.</exception>
+        /// <exception cref="InvalidCommandException">Thrown when the command is unknown.</exception>
         public Command CreateCommand(string commandLine)
         {
             // Split the command string into command name and arguments.
@@ -15,6 +25,7 @@ namespace ProgrammingLanguageEnvironment
             var commandName = parts[0].ToLower();
             var args = parts.Skip(1).ToArray();
 
+            // Process the command line based on the command name.
             switch (commandName)
             {
                 case "moveto":
