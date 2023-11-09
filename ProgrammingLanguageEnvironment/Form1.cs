@@ -41,7 +41,6 @@ namespace ProgrammingLanguageEnvironment
         /// <param name="e">An <see cref="EventArgs"/> that contains the event data.</param>
         private void RunButton_Click(object? sender, EventArgs e)
         {
-            _commandService.ClearCanvas();
             // Delegate command execution to CommandService
             string commands = multiLineCommand.Text + Environment.NewLine + singleLineInput.Text;
             try

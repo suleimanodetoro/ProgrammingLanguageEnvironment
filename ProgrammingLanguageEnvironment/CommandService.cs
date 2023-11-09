@@ -43,7 +43,7 @@ namespace ProgrammingLanguageEnvironment
     public class CommandService : ICommandService
         {
         private readonly CommandParser _commandParser;
-        private readonly CanvasRenderer _canvasRenderer;
+        private readonly ICanvasRenderer _canvasRenderer;
 
 
         /// <summary>
@@ -51,7 +51,7 @@ namespace ProgrammingLanguageEnvironment
         /// </summary>
         /// <param name="commandParser">The parser used to parse the commands.</param>
         /// <param name="canvasRenderer">The renderer used to draw on the canvas.</param>
-        public CommandService(CommandParser commandParser, CanvasRenderer canvasRenderer)
+        public CommandService(CommandParser commandParser, ICanvasRenderer canvasRenderer)
         {
           _commandParser = commandParser;
           _canvasRenderer = canvasRenderer;

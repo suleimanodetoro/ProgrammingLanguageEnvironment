@@ -86,12 +86,16 @@ namespace ProgrammingLanguageEnvironment
         /// </summary>
         public void ClearCanvas()
         {
+            //clear main bitmap
             graphics.Clear(canvas.BackColor);
             using (Graphics cursorGraphics = Graphics.FromImage(cursorBitmap))
             {
+                //clear cursor bitmap too, making it transparent
                 cursorGraphics.Clear(Color.Transparent);
             }
+            //Draw a new pointer
             DrawPointer();
+            //invalidates the canvas control, making sure the state is updated (main butmap clear, and pointer endered at default position0
             canvas.Invalidate();
         }
 
@@ -229,7 +233,7 @@ namespace ProgrammingLanguageEnvironment
         {
             using (var font = new Font("Arial", 8, FontStyle.Bold))
             {
-                graphics.DrawString(message, font, Brushes.Red, new PointF(0, 5)); // Drawing at position (10,10) for demonstration.
+                graphics.DrawString(message, font, Brushes.Red, new PointF(0, 5));
             }
             canvas.Invalidate();
         }
