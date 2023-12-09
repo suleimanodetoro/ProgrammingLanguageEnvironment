@@ -218,9 +218,10 @@ namespace ProgrammingLanguageEnvironment
 
         public void ExecuteCommands(List<Command> commands)
         {
+            ExecutionContext context = new ExecutionContext();
             foreach (var command in commands)
             {
-                command.Execute(this);
+                command.Execute(this, context);
                 DrawPointer();
             }
         }

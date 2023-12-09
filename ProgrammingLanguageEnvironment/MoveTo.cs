@@ -46,7 +46,7 @@ namespace ProgrammingLanguageEnvironment
         /// <remarks>
         /// The method calls the <c>MoveTo</c> method on the renderer with the target position.
         /// </remarks>
-        public override void Execute(ICanvasRenderer renderer)
+        public override void Execute(ICanvasRenderer renderer, ExecutionContext context)
         {
             renderer.MoveTo(targetPosition);
         }

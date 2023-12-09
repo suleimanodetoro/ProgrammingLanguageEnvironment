@@ -34,7 +34,7 @@ namespace ProgrammingLanguageEnvironment
         /// Executes the fill command on a given renderer, setting the canvas's fill state.
         /// </summary>
         /// <param name="renderer">The canvas renderer on which the fill state will be set.</param>
-        public override void Execute(ICanvasRenderer renderer)
+        public override void Execute(ICanvasRenderer renderer, ExecutionContext context)
         {
             renderer.SetFill(fillState);
         }

@@ -47,7 +47,7 @@ namespace ProgrammingLanguageEnvironment
         /// <remarks>
         /// The method calls the <c>DrawRectangle</c> method on the renderer with the specified width and height.
         /// </remarks>
-        public override void Execute(ICanvasRenderer renderer)
+        public override void Execute(ICanvasRenderer renderer, ExecutionContext context)
         {
             renderer.DrawRectangle(width, height);
         }

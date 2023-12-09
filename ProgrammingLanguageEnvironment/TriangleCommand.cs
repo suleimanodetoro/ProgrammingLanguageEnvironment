@@ -38,7 +38,7 @@ namespace ProgrammingLanguageEnvironment
         /// <remarks>
         /// The method calls the <c>DrawEquilateralTriangle</c> method on the renderer with the specified side length.
         /// </remarks>
-        public override void Execute(ICanvasRenderer renderer)
+        public override void Execute(ICanvasRenderer renderer, ExecutionContext context)
         {
             renderer.DrawEquilateralTriangle(sideLength);
         }

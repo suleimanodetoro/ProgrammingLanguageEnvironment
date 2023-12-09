@@ -15,7 +15,7 @@ namespace ProgrammingLanguageEnvironment
         /// Executes the clear command on a given renderer, which clears the canvas.
         /// </summary>
         /// <param name="renderer">The canvas renderer that will have its canvas cleared.</param>
-        public override void Execute(ICanvasRenderer renderer)
+        public override void Execute(ICanvasRenderer renderer, ExecutionContext context)
         {
             renderer.ClearCanvas();
         }

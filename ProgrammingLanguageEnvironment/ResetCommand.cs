@@ -20,7 +20,7 @@ namespace ProgrammingLanguageEnvironment
         /// The execution of this command will move the current drawing position
         /// of the renderer back to the origin point (0,0) of the canvas.
         /// </remarks>
-        public override void Execute(ICanvasRenderer renderer)
+        public override void Execute(ICanvasRenderer renderer, ExecutionContext context)
         {
             renderer.MoveTo(new Point(0,0));
         }

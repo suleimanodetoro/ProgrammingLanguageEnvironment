@@ -40,7 +40,7 @@ namespace ProgrammingLanguageEnvironment
         /// Executes the draw to command on a given renderer.
         /// </summary>
         /// <param name="renderer">The canvas renderer where the line will be drawn to the endpoint.</param>
-        public override void Execute(ICanvasRenderer renderer)
+        public override void Execute(ICanvasRenderer renderer, ExecutionContext context)
         {
             renderer.DrawLine(endPoint);
         }
