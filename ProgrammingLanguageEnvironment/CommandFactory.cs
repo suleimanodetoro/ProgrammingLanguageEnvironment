@@ -25,9 +25,26 @@ namespace ProgrammingLanguageEnvironment
             var commandName = parts[0].ToLower();
             var args = parts.Skip(1).ToArray();
 
+            // Handle the assignment command separately
+            if (commandName != "var" && parts.Length >= 3 && parts[1] == "=")
+            {
+                string variableName = parts[0];
+                string expression = string.Join(" ", parts.Skip(2));
+                return new AssignmentCommand(variableName, expression);
+            }
+
             // Process the command line based on the command name.
             switch (commandName)
             {
+                case "var":
+                    // Check if the format is 'var x = 100'
+                    if (args.Length != 3 || args[1] != "=")
+                        throw new InvalidParameterException($"Invalid format for 'var' command. Expected 'var name = value' but received: {String.Join(" ", args)}.");
+                    string varName = args[0];
+                    int initialValue;
+                    if (!int.TryParse(args[2], out initialValue))
+                        throw new InvalidParameterException($"Invalid value for 'var' command. Expected an integer but received: {args[2]}.");
+                    return new VariableCommand(varName, initialValue);
                 case "moveto":
                     //if moveto command does not receive an arguement, or it does not contain ',' throw an error. It doesn't contain ',' so it does not have a second paramter too ( move to 100, )
                     if (args.Length < 1 || !args[0].Contains(','))
