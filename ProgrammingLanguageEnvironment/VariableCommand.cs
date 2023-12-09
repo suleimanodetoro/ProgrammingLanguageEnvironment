@@ -19,7 +19,7 @@ namespace ProgrammingLanguageEnvironment
 
         public override void Execute(ICanvasRenderer renderer, ExecutionContext context)
         {
-/*            context.SetVariable(variableName, value);
-*/        }
+            context.SetVariable(variableName, value);
+        }
     }
 }

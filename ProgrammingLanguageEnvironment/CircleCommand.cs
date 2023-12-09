@@ -11,31 +11,28 @@ namespace ProgrammingLanguageEnvironment
     /// </summary>
     public class CircleCommand : Command
     {
-        /// <summary>
-        /// The radius of the circle to be drawn.
-        /// </summary>
-        private int radius;
+        private string radiusParameter;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CircleCommand"/> class with the specified radius.
-        /// </summary>
-        /// <param name="radius">The radius of the circle. Must be greater than zero.</param>
-        /// <exception cref="InvalidParameterException">Thrown when the radius is less than or equal to zero.</exception>
-        public CircleCommand(int radius)
+        public CircleCommand(string radiusParameter)
         {
-            if (radius <= 0)
-                throw new InvalidParameterException($"Invalid radius for 'circle'. Radius must be positive. Received: {radius}");
-
-            this.radius = radius;
+            this.radiusParameter = radiusParameter;
         }
-
-        /// <summary>
-        /// Getter the radius of the circle.
-        /// </summary>
-        public int Radius => radius;
 
         public override void Execute(ICanvasRenderer renderer, ExecutionContext context)
         {
+            int radius;
+
+            // Check if the parameter is a variable
+            if (context.Variables.ContainsKey(radiusParameter))
+            {
+                radius = context.GetVariable(radiusParameter);
+            }
+            else if (!int.TryParse(radiusParameter, out radius))
+            {
+                throw new InvalidParameterException("Invalid radius provided for 'circle'.");
+            }
+
+            // Execute the drawing command with the resolved radius
             renderer.DrawCircle(radius);
         }
     }

@@ -95,10 +95,8 @@ namespace ProgrammingLanguageEnvironment
 
 
                 case "circle":
-                    // Check if circle command receives a valid radius.
-                    if (args.Length < 1 || !int.TryParse(args[0], out int circleRadius))
-                        throw new InvalidParameterException($"Invalid radius provided for 'circle'. Expected number but received: {args[0]}.");
-                    return new CircleCommand(circleRadius);
+                    return new CircleCommand(args[0]);
+
 
 
                 case "tri":

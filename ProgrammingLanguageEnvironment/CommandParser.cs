@@ -30,16 +30,17 @@ namespace ProgrammingLanguageEnvironment
         /// <exception cref="ArgumentException">Thrown when the input is null, empty, or whitespace.</exception>
         public List<Command> ParseCommands(string rawInput)
         {
-            // Check if the raw input is null, empty, or consists only of white-space characters
             if (string.IsNullOrWhiteSpace(rawInput))
-            {
                 throw new ArgumentException("Input cannot be empty or whitespace.");
-            }
+
             var commands = new List<Command>();
+            
+
             var lines = rawInput.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
 
             foreach (var line in lines)
             {
+                string trimmedLine = line.Trim();
                 var command = commandFactory.CreateCommand(line);
                 commands.Add(command);
             }
