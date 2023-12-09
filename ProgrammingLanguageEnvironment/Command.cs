@@ -17,6 +17,6 @@ namespace ProgrammingLanguageEnvironment
         /// When implemented in a derived class, executes the command using the provided canvas renderer.
         /// </summary>
         /// <param name="renderer">The canvas renderer that will execute the command.</param>
-        public abstract void Execute(ICanvasRenderer renderer);
+        public abstract void Execute(ICanvasRenderer renderer, ExecutionContext context);
     }
 }
