@@ -35,24 +35,14 @@ namespace ProgrammingLanguageEnvironment
             {
                 throw new ArgumentException("Input cannot be empty or whitespace.");
             }
-            // Initialize the list to store the parsed Command objects.
             var commands = new List<Command>();
+            var lines = rawInput.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
 
-            // Split the input into individual lines/commands
-            // and removing any empty entries.
-            var commandLines = rawInput.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
-
-            // Iterate over each command line extracted from the raw input.
-            foreach (var commandLine in commandLines)
+            foreach (var line in lines)
             {
-                // Use the commandFactory to create a Command object from the command line.
-                // The factory is responsible for parsing the command line and throwing exceptions if necessary.
-                var command = commandFactory.CreateCommand(commandLine);
-
-                // Add the newly created Command object to the list of commands.
-                commands.Add(command); // Add the command to the list
+                var command = commandFactory.CreateCommand(line);
+                commands.Add(command);
             }
-            Console.WriteLine("Command"+commands);
 
             return commands;
         }
