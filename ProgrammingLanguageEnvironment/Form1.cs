@@ -51,6 +51,7 @@ namespace ProgrammingLanguageEnvironment
             {
                 // Handle the error, e.g., display a message on your canvas or in a message box
                 // Syntax is not correct so display the error message
+                _commandService.ClearCanvas();
                 _commandService.DisplayMessage(ex.Message);
             }
         }
