@@ -45,6 +45,19 @@ namespace ProgrammingLanguageEnvironment
                     if (!int.TryParse(args[2], out initialValue))
                         throw new InvalidParameterException($"Invalid value for 'var' command. Expected an integer but received: {args[2]}.");
                     return new VariableCommand(varName, initialValue);
+                case "colour":
+                    if (args.Length != 1 || !args[0].Contains(','))
+                        throw new InvalidParameterException("Invalid parameters for 'colour'. Expected format: R,G,B.");
+
+                    var rgbArgs = args[0].Split(',');
+                    if (rgbArgs.Length != 3)
+                        throw new InvalidParameterException("Invalid number of parameters for 'colour'. Expected 3 RGB values.");
+
+                    if (!int.TryParse(rgbArgs[0], out int r) || !int.TryParse(rgbArgs[1], out int g) || !int.TryParse(rgbArgs[2], out int b))
+                        throw new InvalidParameterException("Invalid RGB values provided for 'colour'.");
+
+                    return new ColourCommand(Color.FromArgb(r, g, b));
+
                 case "moveto":
                     //if moveto command does not receive an arguement, or it does not contain ',' throw an error. It doesn't contain ',' so it does not have a second paramter too ( move to 100, )
                     if (args.Length < 1 || !args[0].Contains(','))
