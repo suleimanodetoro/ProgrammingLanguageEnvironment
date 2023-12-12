@@ -11,6 +11,9 @@ namespace ProgrammingLanguageEnvironment
         public Dictionary<string, int> Variables { get; private set; } = new Dictionary<string, int>();
         public List<Command> Commands { get; set; } = new List<Command>();
         public int ProgramCounter { get; set; } = 0;
+        // Loop handling
+        public Stack<LoopContext> LoopStack { get; private set; } = new Stack<LoopContext>();
+
 
         // Add methods for variable and loop handling
         public void SetVariable(string name, int value)
@@ -39,10 +42,31 @@ namespace ProgrammingLanguageEnvironment
             }
             throw new Exception($"Variable '{name}' not found.");
         }
-       
+        public void PushLoopContext(LoopContext loopContext)
+        {
+            LoopStack.Push(loopContext);
+        }
+
+        public LoopContext PopLoopContext()
+        {
+            return LoopStack.Pop();
+        }
+
+        public LoopContext CurrentLoopContext => LoopStack.Peek();
     }
 
-   
+    public class LoopContext
+    {
+        public int StartIndex { get; set; }
+        public int EndIndex { get; set; }
+        public int Iterations { get; set; }
+        public int CurrentIteration { get; set; } = 0;
 
-
+        public LoopContext(int startIndex, int endIndex, int iterations)
+        {
+            StartIndex = startIndex;
+            EndIndex = endIndex;
+            Iterations = iterations;
+        }
+    }
 }
