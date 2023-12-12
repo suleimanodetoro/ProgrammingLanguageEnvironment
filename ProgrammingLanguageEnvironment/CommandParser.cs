@@ -34,16 +34,41 @@ namespace ProgrammingLanguageEnvironment
                 throw new ArgumentException("Input cannot be empty or whitespace.");
 
             var commands = new List<Command>();
-            
+            var loopCommands = new List<Command>();
+            bool isInsideLoop = false;
+            string loopCondition = "";
+
+
 
             var lines = rawInput.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
 
             foreach (var line in lines)
             {
                 string trimmedLine = line.Trim();
-                var command = commandFactory.CreateCommand(line);
-                commands.Add(command);
+                if (trimmedLine.StartsWith("while"))
+                {
+                    isInsideLoop = true;
+                    loopCondition = trimmedLine.Substring("while".Length).Trim();
+                    loopCommands.Clear();
+                }
+                else if (trimmedLine.StartsWith("endloop") && isInsideLoop)
+                {
+                    isInsideLoop = false;
+                    commands.Add(new WhileCommand(loopCondition, new List<Command>(loopCommands)));
+                    loopCommands.Clear();
+                }
+                else
+                {
+                    var command = commandFactory.CreateCommand(line);
+                    if (isInsideLoop)
+                        loopCommands.Add(command);
+                    else
+                        commands.Add(command);
+                }
             }
+
+            if (isInsideLoop)
+                throw new InvalidOperationException("Unclosed loop found in script.");
 
             return commands;
         }
