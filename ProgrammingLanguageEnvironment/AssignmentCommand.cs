@@ -45,11 +45,9 @@ namespace ProgrammingLanguageEnvironment
                         return varValue + operand;
                     case "-":
                         return varValue - operand;
-                    // Add other cases for *, /, etc. if needed
                     case "*":
                         return varValue * operand;
                     case "/":
-                        // You might want to add handling for division by zero
                         if (operand == 0)
                         {
                             throw new Exception("Division by zero.");
