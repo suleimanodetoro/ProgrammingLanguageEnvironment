@@ -13,6 +13,7 @@ namespace ProgrammingLanguageEnvironment
     {
         // The factory responsible for creating command objects from strings.
         private CommandFactory commandFactory;
+        private Stack<KeyValuePair<string, List<Command>>> ifCommandStack = new Stack<KeyValuePair<string, List<Command>>>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CommandParser"/> class.
@@ -57,11 +58,30 @@ namespace ProgrammingLanguageEnvironment
                     commands.Add(new WhileCommand(loopCondition, new List<Command>(loopCommands)));
                     loopCommands.Clear();
                 }
+                else if (trimmedLine.StartsWith("if"))
+                {
+                    var condition = trimmedLine.Substring(2).Trim();
+                    ifCommandStack.Push(new KeyValuePair<string, List<Command>>(condition, new List<Command>()));
+                }
+                else if (trimmedLine == "endif" && ifCommandStack.Count > 0)
+                {
+                    var ifData = ifCommandStack.Pop();
+                    if (ifCommandStack.Count > 0)
+                    {
+                        ifCommandStack.Peek().Value.Add(new IfCommand(ifData.Key, ifData.Value));
+                    }
+                    else
+                    {
+                        commands.Add(new IfCommand(ifData.Key, ifData.Value));
+                    }
+                }
                 else
                 {
                     var command = commandFactory.CreateCommand(line);
                     if (isInsideLoop)
                         loopCommands.Add(command);
+                    else if (ifCommandStack.Count > 0)
+                        ifCommandStack.Peek().Value.Add(command);
                     else
                         commands.Add(command);
                 }
@@ -69,6 +89,8 @@ namespace ProgrammingLanguageEnvironment
 
             if (isInsideLoop)
                 throw new InvalidOperationException("Unclosed loop found in script.");
+            if (ifCommandStack.Count > 0)
+                throw new InvalidOperationException("Unclosed if block found in script.");
 
             return commands;
         }
