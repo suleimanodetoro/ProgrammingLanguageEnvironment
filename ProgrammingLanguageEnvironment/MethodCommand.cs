@@ -21,8 +21,8 @@ namespace ProgrammingLanguageEnvironment
 
         public override void Execute(ICanvasRenderer renderer, ExecutionContext context)
         {
-/*            context.AddMethod(MethodName, this);
-*/        }
+            context.AddMethod(MethodName, this);
+        }
 
     }
 
