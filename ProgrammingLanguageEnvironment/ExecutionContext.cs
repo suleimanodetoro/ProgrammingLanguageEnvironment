@@ -14,6 +14,9 @@ namespace ProgrammingLanguageEnvironment
         // Loop handling
         public Stack<LoopContext> LoopStack { get; private set; } = new Stack<LoopContext>();
 
+        public Dictionary<string, MethodCommand> Methods { get; private set; } = new Dictionary<string, MethodCommand>();
+
+
 
         // Add methods for variable and loop handling
         public void SetVariable(string name, int value)
@@ -42,6 +45,29 @@ namespace ProgrammingLanguageEnvironment
             }
             throw new Exception($"Variable '{name}' not found.");
         }
+
+        // Method for adding a method command
+        public void AddMethod(string methodName, MethodCommand methodCommand)
+        {
+            if (Methods.ContainsKey(methodName))
+            {
+                throw new Exception($"A method with the name '{methodName}' is already defined.");
+            }
+
+            Methods[methodName] = methodCommand;
+        }
+
+        // Method for retrieving a method command
+        public MethodCommand GetMethod(string methodName)
+        {
+            if (Methods.TryGetValue(methodName, out var method))
+            {
+                return method;
+            }
+
+            throw new Exception($"Method '{methodName}' is not defined.");
+        }
+
         public void PushLoopContext(LoopContext loopContext)
         {
             LoopStack.Push(loopContext);
