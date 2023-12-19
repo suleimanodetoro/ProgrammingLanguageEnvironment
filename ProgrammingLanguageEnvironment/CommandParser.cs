@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -13,8 +14,8 @@ namespace ProgrammingLanguageEnvironment
     {
         // The factory responsible for creating command objects from strings.
         private CommandFactory commandFactory;
-        private Stack<KeyValuePair<string, List<Command>>> ifCommandStack = new Stack<KeyValuePair<string, List<Command>>>();
-
+/*        this is where it started
+*/
         /// <summary>
         /// Initializes a new instance of the <see cref="CommandParser"/> class.
         /// </summary>
@@ -36,6 +37,8 @@ namespace ProgrammingLanguageEnvironment
 
             var commands = new List<Command>();
             var loopCommands = new List<Command>();
+            var ifCommandStack = new Stack<KeyValuePair<string, List<Command>>>();
+            var methodCommandsStack = new Stack<MethodData>();
             bool isInsideLoop = false;
             string loopCondition = "";
 
@@ -75,6 +78,36 @@ namespace ProgrammingLanguageEnvironment
                         commands.Add(new IfCommand(ifData.Key, ifData.Value));
                     }
                 }
+                else if (trimmedLine.StartsWith("method"))
+                {
+                    // Handling method definition
+                    var methodParts = trimmedLine.Substring("method".Length).Trim().Split(new[] { ' ' }, 2);
+                    string methodName = methodParts[0].Trim();
+                    var parameters = methodParts.Length > 1 ? methodParts[1].Trim('(', ')').Split(',').Select(p => p.Trim()).ToList() : new List<string>();
+
+                    // Push a new MethodData to the stack
+                    methodCommandsStack.Push(new MethodData(methodName, parameters));
+                }
+                else if (trimmedLine.StartsWith("endmethod") && methodCommandsStack.Count > 0)
+                {
+                    // Pop the MethodData and add it to the commands list
+                    var methodData = methodCommandsStack.Pop();
+                    var methodCommand = new MethodCommand(methodData.MethodName, methodData.Parameters, methodData.Commands);
+
+                    // Add MethodCommand to the main commands list for execution
+                    commands.Add(methodCommand);
+
+                    // Register the method immediately in the execution context (optional based on your design)
+                    //context.AddMethod(methodCommand);
+                }
+
+                else if (trimmedLine.Contains("(") && trimmedLine.Contains(")"))
+                {
+                    var methodCallParts = trimmedLine.Split(new char[] { '(', ')' }, StringSplitOptions.RemoveEmptyEntries);
+                    string methodName = methodCallParts[0].Trim();
+                    var actualParameters = methodCallParts[1].Split(',').Select(p => p.Trim()).ToList();
+                    commands.Add(new MethodCallCommand(methodName, actualParameters));
+                }
                 else
                 {
                     var command = commandFactory.CreateCommand(line);
@@ -82,6 +115,8 @@ namespace ProgrammingLanguageEnvironment
                         loopCommands.Add(command);
                     else if (ifCommandStack.Count > 0)
                         ifCommandStack.Peek().Value.Add(command);
+                    else if (methodCommandsStack.Count > 0)
+                        methodCommandsStack.Peek().Commands.Add(command);  // Use Commands property of MethodData
                     else
                         commands.Add(command);
                 }
@@ -91,6 +126,9 @@ namespace ProgrammingLanguageEnvironment
                 throw new InvalidOperationException("Unclosed loop found in script.");
             if (ifCommandStack.Count > 0)
                 throw new InvalidOperationException("Unclosed if block found in script.");
+            if (methodCommandsStack.Count > 0)
+                throw new InvalidOperationException("Unclosed method block found in script.");
+
 
             return commands;
         }
