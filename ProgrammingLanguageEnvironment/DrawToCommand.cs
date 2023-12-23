@@ -11,38 +11,23 @@ namespace ProgrammingLanguageEnvironment
     /// </summary>
     public class DrawToCommand : Command
     {
-        private Point endPoint;
+        private string xParameter;
+        private string yParameter;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DrawToCommand"/> class with a specified endpoint.
-        /// </summary>
-        /// <param name="endPoint">The endpoint where the line should be drawn to.</param>
-        /// <exception cref="InvalidParameterException">
-        /// Thrown when the coordinates of the endpoint are negative.
-        /// </exception>
-        public DrawToCommand(Point endPoint)
+        public DrawToCommand(string xParameter, string yParameter)
         {
-            // Check if the provided Point is valid. For example, we can check if X and Y are non-negative.
-            if (endPoint.X < 0 || endPoint.Y < 0)
-            {
-                throw new InvalidParameterException("Coordinates cannot be negative. Error in class file");
-            }
-            this.endPoint = endPoint;
+            this.xParameter = xParameter;
+            this.yParameter = yParameter;
         }
 
-        /// <summary>
-        /// Gets the endpoint where the line should be drawn to.
-        /// </summary>
-        public Point EndPoint => endPoint;
-
-
-        /// <summary>
-        /// Executes the draw to command on a given renderer.
-        /// </summary>
-        /// <param name="renderer">The canvas renderer where the line will be drawn to the endpoint.</param>
         public override void Execute(ICanvasRenderer renderer, ExecutionContext context)
         {
-            renderer.DrawLine(endPoint);
+            int x = context.GetVariableValue(xParameter);
+            int y = context.GetVariableValue(yParameter);
+            Point endPoint = new Point(x, y);
+
+            renderer.DrawLine(context.CurrentPosition, endPoint, context.CurrentColor);
+            context.CurrentPosition = endPoint;
         }
     }
 }

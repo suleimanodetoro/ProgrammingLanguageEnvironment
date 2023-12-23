@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ProgrammingLanguageEnvironment;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,8 +22,7 @@ namespace ProgrammingLanguageEnvironment
         public override void Execute(ICanvasRenderer renderer, ExecutionContext context)
         {
             int radius;
-
-            // Check if the parameter is a variable
+            // Check if the parameter is a variable or a direct value
             if (context.Variables.ContainsKey(radiusParameter))
             {
                 radius = context.GetVariable(radiusParameter);
@@ -32,9 +32,10 @@ namespace ProgrammingLanguageEnvironment
                 throw new InvalidParameterException("Invalid radius provided for 'circle'.");
             }
 
-            // Execute the drawing command with the resolved radius
-            renderer.DrawCircle(radius);
+            // Use the ExecutionContext's color and position
+            renderer.DrawCircle(radius, context.CurrentColor, context.CurrentPosition, context.FillShapes);
         }
     }
 
 }
+

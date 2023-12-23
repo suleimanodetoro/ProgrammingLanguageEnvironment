@@ -7,20 +7,20 @@ namespace ProgrammingLanguageEnvironment
     {
         private readonly ICommandService _commandService;
         private readonly IFileService _fileService;
+        private List<IEnumerable<string>> _loadedCommands = new List<IEnumerable<string>>();
+        private readonly CommandParser _commandParser; 
+        private readonly ICanvasRenderer _canvasRenderer; 
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CommandParserForm"/> class.
-        /// </summary>
         public CommandParserForm()
         {
             InitializeComponent();
 
-            // Create instances of services
-            var commandParser = new CommandParser();
-            var canvasRenderer = new CanvasRenderer(canvas);
+            // Assign to class fields instead of creating local variables
+            _commandParser = new CommandParser();
+            _canvasRenderer = new CanvasRenderer(canvas);
 
             // Instantiate the command service with the parser and renderer
-            _commandService = new CommandService(commandParser, canvasRenderer);
+            _commandService = new CommandService(_commandParser, _canvasRenderer);
 
             // Instantiate the file service
             _fileService = new FileService();
@@ -29,8 +29,26 @@ namespace ProgrammingLanguageEnvironment
             this.saveCodeButton.Click += new System.EventHandler(this.saveBtn_Click);
             this.runButton.Click += new EventHandler(this.RunButton_Click);
             this.syntaxButton.Click += new EventHandler(this.SyntaxButton_Click);
-            // Hook up the event handlers
             this.loadCodeButton.Click += new EventHandler(this.loadBtn_Click);
+        }
+
+        private async Task ExecuteCommandsInParallel(List<IEnumerable<string>> commandLists)
+        {
+            var tasks = commandLists.Select(commands =>
+            {
+                return Task.Run(() =>
+                {
+                    ExecutionContext context = new ExecutionContext();
+                    var parsedCommands = _commandParser.ParseCommands(string.Join(Environment.NewLine, commands));
+                    foreach (var command in parsedCommands)
+                    {
+                        // Access to _canvasRenderer might need synchronization for thread safety
+                        command.Execute(_canvasRenderer, context);
+                    }
+                });
+            });
+
+            await Task.WhenAll(tasks);
         }
 
 
@@ -105,26 +123,28 @@ namespace ProgrammingLanguageEnvironment
         {
             OpenFileDialog openFileDialog = new OpenFileDialog
             {
-                FileName = "commands.txt",
+                Multiselect = true,
                 Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*"
             };
 
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
-                string filePath = openFileDialog.FileName;
+                _loadedCommands.Clear(); // Clear previous commands
 
-                try
+                foreach (var filePath in openFileDialog.FileNames)
                 {
-                    var commands = _fileService.LoadCommandsFromFile(filePath);
-                    multiLineCommand.Lines = commands.ToArray();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Error loading file: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    try
+                    {
+                        var commands = _fileService.LoadCommandsFromFile(filePath);
+                        _loadedCommands.Add(commands);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Error loading file: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                 }
             }
         }
-
 
         // Method to save commands to a file. The defuatl file name will be commands.txt
         /// <summary>
@@ -163,6 +183,23 @@ namespace ProgrammingLanguageEnvironment
         {
             // Check the multiline TextBox for command input
             return multiLineCommand.Lines;
+        }
+
+        private void multiLineCommand_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void loadCodeButton_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private async void runParallelButton_Click(object sender, EventArgs e)
+        {
+            await Console.Out.WriteLineAsync("This button is working");
+            await ExecuteCommandsInParallel(_loadedCommands);
+
         }
     }
 }

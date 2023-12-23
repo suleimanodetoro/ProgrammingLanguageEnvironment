@@ -35,6 +35,7 @@
             syntaxButton = new Button();
             saveCodeButton = new Button();
             loadCodeButton = new Button();
+            runParallelButton = new Button();
             ((System.ComponentModel.ISupportInitialize)canvas).BeginInit();
             SuspendLayout();
             // 
@@ -46,8 +47,7 @@
             multiLineCommand.PlaceholderText = "Enter Multi-Line Commands Here";
             multiLineCommand.Size = new Size(349, 302);
             multiLineCommand.TabIndex = 0;
-/*            multiLineCommand.TextChanged += multiLineCommand_TextChanged;
-*/            // 
+            // 
             // singleLineInput
             // 
             singleLineInput.Location = new Point(12, 347);
@@ -83,8 +83,7 @@
             syntaxButton.TabIndex = 4;
             syntaxButton.Text = "SYNTAX";
             syntaxButton.UseVisualStyleBackColor = false;
-/*            syntaxButton.Click += button1_Click;
-*/            // 
+            // 
             // saveCodeButton
             // 
             saveCodeButton.Location = new Point(775, 468);
@@ -93,8 +92,7 @@
             saveCodeButton.TabIndex = 5;
             saveCodeButton.Text = "Save Code";
             saveCodeButton.UseVisualStyleBackColor = true;
-/*            saveCodeButton.Click += button1_Click_1;
-*/            // 
+            // 
             // loadCodeButton
             // 
             loadCodeButton.Location = new Point(902, 468);
@@ -103,13 +101,23 @@
             loadCodeButton.TabIndex = 6;
             loadCodeButton.Text = "Load Code";
             loadCodeButton.UseVisualStyleBackColor = true;
-/*            loadCodeButton.Click += button2_Click;
-*/            // 
+            // 
+            // runParallelButton
+            // 
+            runParallelButton.Location = new Point(889, 433);
+            runParallelButton.Name = "runParallelButton";
+            runParallelButton.Size = new Size(121, 29);
+            runParallelButton.TabIndex = 7;
+            runParallelButton.Text = "Run_Parallel";
+            runParallelButton.UseVisualStyleBackColor = true;
+            runParallelButton.Click += runParallelButton_Click;
+            // 
             // CommandParserForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1036, 568);
+            Controls.Add(runParallelButton);
             Controls.Add(loadCodeButton);
             Controls.Add(saveCodeButton);
             Controls.Add(syntaxButton);
@@ -119,8 +127,7 @@
             Controls.Add(multiLineCommand);
             Name = "CommandParserForm";
             Text = "Command Parser Form";
-/*            Load += Form1_Load;
-*/            ((System.ComponentModel.ISupportInitialize)canvas).EndInit();
+            ((System.ComponentModel.ISupportInitialize)canvas).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -134,5 +141,6 @@
         private Button syntaxButton;
         private Button saveCodeButton;
         private Button loadCodeButton;
+        private Button runParallelButton;
     }
 }

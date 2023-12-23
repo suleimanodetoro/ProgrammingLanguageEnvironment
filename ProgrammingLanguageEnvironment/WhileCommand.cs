@@ -42,7 +42,6 @@ namespace ProgrammingLanguageEnvironment
             {
                 case "<": return leftOperand < rightOperand;
                 case ">": return leftOperand > rightOperand;
-                // Additional operators can be added here as needed
                 default: throw new Exception("Unsupported operation in condition.");
             }
         }

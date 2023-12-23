@@ -21,17 +21,16 @@ namespace ProgrammingLanguageEnvironment
         public Command CreateCommand(string commandLine)
         {
             // Split the command string into command name and arguments.
-            var parts = commandLine.Split(' ');
-            var commandName = parts[0].ToLower();
-            var args = parts.Skip(1).ToArray();
-
-            // Handle the assignment command separately
-            if (commandName != "var" && parts.Length >= 3 && parts[1] == "=")
+            var parts = commandLine.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            // Inside the CreateCommand method
+            if (parts.Length >= 3 && parts[1] == "=")
             {
                 string variableName = parts[0];
                 string expression = string.Join(" ", parts.Skip(2));
                 return new AssignmentCommand(variableName, expression);
             }
+            var commandName = parts[0].ToLower();
+            var args = parts.Skip(1).ToArray();
 
             // Process the command line based on the command name.
             switch (commandName)
@@ -45,6 +44,31 @@ namespace ProgrammingLanguageEnvironment
                     if (!int.TryParse(args[2], out initialValue))
                         throw new InvalidParameterException($"Invalid value for 'var' command. Expected an integer but received: {args[2]}.");
                     return new VariableCommand(varName, initialValue);
+                case "while":
+                    // handled in parser
+                    break;
+                case "if":
+                    // 'if' command is handled in the parser
+                    break;
+
+                case "moveto":
+                    // ... existing validation ...
+                    var moveToArgs = args[0].Split(',');
+                    // moveToArgs now represent either variable names or direct coordinates
+                    return new MoveToCommand(moveToArgs[0], moveToArgs[1]);
+
+
+
+                case "drawto":
+                    var drawToArgs = args[0].Split(',');
+                    return new DrawToCommand(drawToArgs[0], drawToArgs[1]);
+
+
+                case "pen":
+                    // Check if the pen command has received a valid color.
+                    if (args.Length < 1 || String.IsNullOrEmpty(args[0]))
+                        throw new InvalidParameterException("Invalid color provided for 'pen' command.");
+                    return new PenCommand(args[0]);
                 case "colour":
                     if (args.Length != 1 || !args[0].Contains(','))
                         throw new InvalidParameterException("Invalid parameters for 'colour'. Expected format: R,G,B.");
@@ -58,53 +82,13 @@ namespace ProgrammingLanguageEnvironment
 
                     return new ColourCommand(Color.FromArgb(r, g, b));
 
-                case "moveto":
-                    //if moveto command does not receive an arguement, or it does not contain ',' throw an error. It doesn't contain ',' so it does not have a second paramter too ( move to 100, )
-                    if (args.Length < 1 || !args[0].Contains(','))
-                        throw new InvalidParameterException($"Invalid parameters. Expected format: x,y, received: {String.Join(" ", args)}.");
-                    var moveToArgs = args[0].Split(',');
-                    if (moveToArgs.Length != 2)
-                        throw new InvalidParameterException($"Invalid number of parameters for 'moveto'. Expected 2 but received {moveToArgs.Length}.");
-                    //If it has two item seperated with ',' but the items given are invalid, throw error
-                    if (!int.TryParse(moveToArgs[0], out int x) || !int.TryParse(moveToArgs[1], out int y))
-                        throw new InvalidParameterException($"Invalid coordinates provided for 'moveto'. Expected two numbers but received: {args[0]}.");
-                    return new MoveToCommand(new Point(x, y));
-
-
-                case "drawto":
-                    // Check that only one argument is received and it contains a comma
-                    if (args.Length != 1 || !args[0].Contains(','))
-                        throw new InvalidParameterException($"Invalid parameters for 'drawto'. Expected format: x,y but received: {String.Join(" ", args)}.");
-
-                    // Split the argument by the comma to separate X and Y coordinates
-                    var drawToArgs = args[0].Split(',');
-
-                    // Check if exactly two items are provided after splitting
-                    if (drawToArgs.Length != 2)
-                        throw new InvalidParameterException($"Invalid number of parameters for 'drawto'. Expected 2 but received {drawToArgs.Length}.");
-
-                    // Attempt to parse the X and Y coordinates
-                    if (!int.TryParse(drawToArgs[0], out int endX) || !int.TryParse(drawToArgs[1], out int endY))
-                        throw new InvalidParameterException($"Invalid coordinates provided for 'drawto'. Expected two numbers but received: {args[0]}.");
-                    return new DrawToCommand(new Point(endX, endY));
-
-
-                case "pen":
-                    // Check if the pen command has received a valid color.
-                    if (args.Length < 1 || String.IsNullOrEmpty(args[0]))
-                        throw new InvalidParameterException("Invalid color provided for 'pen' command.");
-                    return new PenCommand(args[0]);
-
-
                 case "rect":
-                    // If 'rect' command receives a single parameter (rect 10,20) or does not contain ',' throw an error.
-                    if (args.Length < 1 || !args[0].Contains(','))
-                        throw new InvalidParameterException($"Invalid parameters for 'rect'. Expected format: width,height but received: {String.Join(" ", args)}.");
                     var rectArgs = args[0].Split(',');
-                    // If two items separated by ',' are provided but are invalid, throw error.
-                    if (!int.TryParse(rectArgs[0], out int rectWidth) || !int.TryParse(rectArgs[1], out int rectHeight))
-                        throw new InvalidParameterException($"Invalid dimensions provided for 'rect'. Expected numbers but received: {args[0]}.");
-                    return new RectangleCommand(rectWidth, rectHeight);
+                    return new RectangleCommand(rectArgs[0], rectArgs[1]);
+
+                case "tri":
+                    // Instead of parsing the side length here, pass the string to the command
+                    return new TriangleCommand(args[0]);
 
 
                 case "circle":
@@ -112,11 +96,6 @@ namespace ProgrammingLanguageEnvironment
 
 
 
-                case "tri":
-                    // Check if triangle command receives a valid side length.
-                    if (args.Length < 1 || !int.TryParse(args[0], out int triangleSide))
-                        throw new InvalidParameterException($"Invalid side length provided for 'tri'. Expected number but received: {args[0]}.");
-                    return new TriangleCommand(triangleSide);
 
 
                 case "fill":
@@ -141,6 +120,8 @@ namespace ProgrammingLanguageEnvironment
                 default:
                     throw new InvalidCommandException($"Unknown command \"{commandName}\".");
             }
+            // This line should never be reached due to the above default case
+            throw new InvalidOperationException("Unhandled command type.");
         }
     }
 }

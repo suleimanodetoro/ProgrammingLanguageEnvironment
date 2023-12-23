@@ -97,7 +97,6 @@ namespace ProgrammingLanguageEnvironment
                     // Add MethodCommand to the main commands list for execution
                     commands.Add(methodCommand);
 
-                    // Register the method immediately in the execution context (optional based on your design)
                     //context.AddMethod(methodCommand);
                 }
 
@@ -116,7 +115,7 @@ namespace ProgrammingLanguageEnvironment
                     else if (ifCommandStack.Count > 0)
                         ifCommandStack.Peek().Value.Add(command);
                     else if (methodCommandsStack.Count > 0)
-                        methodCommandsStack.Peek().Commands.Add(command);  // Use Commands property of MethodData
+                        methodCommandsStack.Peek().Commands.Add(command);  
                     else
                         commands.Add(command);
                 }
