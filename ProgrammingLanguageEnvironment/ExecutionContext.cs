@@ -15,6 +15,10 @@ namespace ProgrammingLanguageEnvironment
         public Stack<LoopContext> LoopStack { get; private set; } = new Stack<LoopContext>();
 
         public Dictionary<string, MethodCommand> Methods { get; private set; } = new Dictionary<string, MethodCommand>();
+        //The following are state fields for correctly rendering thread draw commands
+        public Point CurrentPosition { get; set; } = new Point(0, 0);
+        public Color CurrentColor { get; set; } = Color.Black;
+        public bool FillShapes { get; set; } = false;
 
 
 
@@ -26,15 +30,15 @@ namespace ProgrammingLanguageEnvironment
 
         public int GetVariableValue(string variableOrConstant)
         {
-            if (int.TryParse(variableOrConstant, out int constantValue))
+            if (Variables.TryGetValue(variableOrConstant, out int value))
             {
-                return constantValue; // It's a constant
+                return value; // It's a variable with an integer value
             }
-            else if (Variables.TryGetValue(variableOrConstant, out int variableValue))
+            else if (int.TryParse(variableOrConstant, out int constant))
             {
-                return variableValue; // It's a variable
+                return constant; // It's a directly provided integer
             }
-            throw new Exception($"Variable '{variableOrConstant}' not found or invalid constant.");
+            throw new Exception($"'{variableOrConstant}' is neither a valid variable nor an integer.");
         }
 
         public int GetVariable(string name)
