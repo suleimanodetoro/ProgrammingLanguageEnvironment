@@ -6,41 +6,12 @@ using System.Threading.Tasks;
 
 namespace ProgrammingLanguageEnvironment
 {
-    /// <summary>
-    /// Defines the interface for a service that executes and manages drawing commands.
-    /// </summary>
-    public interface ICommandService
-    {
-        /// <summary>
-        /// Executes a series of commands on a canvas.
-        /// </summary>
-        /// <param name="commands">The string containing the commands to be executed.</param>
-        void ExecuteCommands(string commands);
-        /// <summary>
-        /// Checks the syntax of the commands without executing them.
-        /// </summary>
-        /// <param name="commands">The string containing the commands to be checked.</param>
-        /// <param name="errorMessage">Outputs an error message if the syntax is incorrect.</param>
-        /// <returns>True if the syntax is correct; otherwise, false.</returns>
-        bool CheckSyntax(string commands, out string errorMessage);
-
-        /// <summary>
-        /// Displays a message on the canvas.
-        /// </summary>
-        /// <param name="message">The message to be displayed.</param>
-        void DisplayMessage(string message); 
-
-        /// <summary>
-        /// Clears the canvas.
-        /// </summary>
-        void ClearCanvas(); // to help clear the canvas on checks
-
-    }
+    
 
     /// <summary>
     /// Provides services for executing and managing drawing commands.
     /// </summary>
-    public class CommandService : ICommandService
+    public class CommandService
         {
         private readonly CommandParser _commandParser;
         private readonly ICanvasRenderer _canvasRenderer;
