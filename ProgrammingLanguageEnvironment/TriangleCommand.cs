@@ -29,6 +29,12 @@ namespace ProgrammingLanguageEnvironment
         };
 
             renderer.DrawEquilateralTriangle(triangleVertices, context.CurrentColor, context.FillShapes);
+
+            // Update the current position to the last vertex of the triangle
+            Point newPoint = triangleVertices[1];
+            context.CurrentPosition = newPoint;
+            //With newpoint, render pointer location
+            renderer.DrawPointer(newPoint);
         }
     }
 

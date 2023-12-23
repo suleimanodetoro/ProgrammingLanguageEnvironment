@@ -25,7 +25,12 @@ namespace ProgrammingLanguageEnvironment
             int width = context.GetVariableValue(widthParameter);
             int height = context.GetVariableValue(heightParameter);
 
+            // Draw the rectangle
             renderer.DrawRectangle(width, height, context.CurrentColor, context.CurrentPosition, context.FillShapes);
+
+            Point newPoint = new Point(context.CurrentPosition.X + width, context.CurrentPosition.Y + height);
+            context.CurrentPosition = newPoint;
+            renderer.DrawPointer(newPoint);
         }
     }
 
