@@ -1,88 +1,58 @@
-﻿using ProgrammingLanguageEnvironment;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-
-using System.Threading.Tasks;
+using ProgrammingLanguageEnvironment; 
+using System.Drawing;
 
 namespace UnitTestPLE
 {
-    /// <summary>
-    /// Contains unit tests for the DrawToCommand class to verify its functionality.
-    /// </summary>
     [TestClass]
     public class DrawToCommandTests
     {
-        /// <summary>
-        /// Verifies that a DrawToCommand object is correctly created with the specified endpoint.
-        /// </summary>
-        /// <remarks>
-        /// This test ensures that the endpoint property of the created DrawToCommand object
-        /// matches the point provided to the constructor.
-        /// </remarks>
-        [TestMethod]
-        public void DrawToCommand_CorrectParameters_CreatesCommand()
+        private Mock<ICanvasRenderer> mockRenderer;
+        private ProgrammingLanguageEnvironment.ExecutionContext context; //to avoid ambiguity
+
+        [TestInitialize]
+        public void Initialize()
         {
-            // This test verifies that a DrawToCommand object is correctly created with the 39,40 endpoint.
-            // It checks that the EndPoint property of the created DrawToCommand object matches the point provided to the constructor.
-
-            // Arrange
-            var point = new Point(30, 40);
-            var drawToCommand = new DrawToCommand(point);
-
-            // Act & Assert
-            Assert.AreEqual(point, drawToCommand.EndPoint);
+            mockRenderer = new Mock<ICanvasRenderer>();
+            context = new ProgrammingLanguageEnvironment.ExecutionContext();  //to avoid ambiguity
+            context.SetVariable("x", 30);  // Setting up variables for the test
+            context.SetVariable("y", 40);
         }
 
-        /// <summary>
-        /// Ensures that executing the DrawToCommand calls the DrawLine method on the renderer with the correct endpoint.
-        /// </summary>
-        /// <remarks>
-        /// This test uses mocking to intercept the call to the renderer and verify that DrawLine was called with the correct point.
-        /// </remarks>
         [TestMethod]
-        public void DrawToCommand_Execute_CallsDrawLineWithCorrectEndPoint()
+        public void DrawToCommand_Execute_UpdatesCurrentPosition()
         {
-            // This test checks that the Execute method of the DrawToCommand calls the DrawLine method on the renderer with the correct endpoint.
-            // It uses mocking to intercept the call to the renderer and verify that DrawLine was called with the correct point.
-
             // Arrange
-            var endPoint = new Point(30, 40);
-            var drawToCommand = new DrawToCommand(endPoint);
-            var mockRenderer = new Mock<ICanvasRenderer>();
-            mockRenderer.Setup(r => r.DrawLine(It.IsAny<Point>()));
+            var drawToCommand = new DrawToCommand("x", "y");  // Using variable names instead of direct points
+            Point expectedEndPoint = new Point(30, 40);       // Expected endpoint based on variable values
+
+            // Set up mocking to capture line drawing
+            mockRenderer.Setup(r => r.DrawLine(It.IsAny<Point>(), It.IsAny<Point>(), It.IsAny<Color>())).Verifiable();
+            mockRenderer.Setup(r => r.DrawPointer(It.IsAny<Point>()));
 
             // Act
-            drawToCommand.Execute(mockRenderer.Object);
+            drawToCommand.Execute(mockRenderer.Object, context);
 
             // Assert
-            mockRenderer.Verify(r => r.DrawLine(endPoint), Times.Once());
+            mockRenderer.Verify(r => r.DrawLine(It.IsAny<Point>(), expectedEndPoint, It.IsAny<Color>()), Times.Once());
+            Assert.AreEqual(expectedEndPoint, context.CurrentPosition);  // Verify that the current position is updated
         }
-
-        /// <summary>
-        /// Tests if constructing a DrawToCommand with negative coordinates throws an InvalidParameterException.
-        /// </summary>
-        /// <remarks>
-        /// This test case uses the ExpectedException attribute to indicate that the test passes if the specified exception is thrown.
-        /// </remarks>
 
         [TestMethod]
-        [ExpectedException(typeof(InvalidParameterException))]
-        public void DrawToCommand_NegativeCoordinates_ThrowsInvalidParameterException()
+        public void DrawToCommand_NegativeCoordinates_ThrowsException()
         {
-            // This test ensures that an InvalidParameterException is thrown when a DrawToCommand is constructed with negative coordinates.
-            // The ExpectedException attribute indicates the test will pass if the specified exception is thrown during execution.
+            // Set up context with negative coordinates
+            context.SetVariable("x", -10);  // Negative value
+            context.SetVariable("y", -20);  // Negative value
 
-            // Arrange & Act
-            var drawToCommand = new DrawToCommand(new Point(-1, -1));
+            var drawToCommand = new DrawToCommand("x", "y");
 
-            // Assert is handled by ExpectedException
+            // Act & Assert
+            Assert.ThrowsException<ArgumentException>(() =>
+            {
+                drawToCommand.Execute(mockRenderer.Object, context);
+            });
         }
-
-       
-
     }
 }
