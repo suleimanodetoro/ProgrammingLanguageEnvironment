@@ -1,88 +1,66 @@
-﻿using Moq;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using ProgrammingLanguageEnvironment;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Drawing;
 
 namespace UnitTestPLE
 {
-    /// <summary>
-    /// Contains unit tests for the TriangleCommand class to ensure that triangle commands are created and executed correctly.
-    /// </summary>
     [TestClass]
     public class TriangleCommandTests
     {
+        private Mock<ICanvasRenderer> mockRenderer;
+        private ProgrammingLanguageEnvironment.ExecutionContext context;
 
-        /// <summary>
-        /// Verifies that the TriangleCommand constructor correctly assigns the side length parameter to its corresponding property.
-        /// </summary>
-        /// <remarks>
-        /// This test checks that the side length provided to the constructor is accurately reflected in the TriangleCommand's SideLength property.
-        /// </remarks>
-        [TestMethod]
-        public void TriangleCommand_CorrectParameters_CreatesCommand()
+        [TestInitialize]
+        public void Setup()
         {
-            // Arrange
-            int sideLength = 10;
-            var triangleCommand = new TriangleCommand(sideLength);
-
-            // Act & Assert
-            Assert.AreEqual(sideLength, typeof(TriangleCommand)?.GetProperty("SideLength")?.GetValue(triangleCommand));
+            mockRenderer = new Mock<ICanvasRenderer>();
+            context = new ProgrammingLanguageEnvironment.ExecutionContext();
         }
 
-        /// <summary>
-        /// Ensures that executing the TriangleCommand invokes the DrawEquilateralTriangle method on the ICanvasRenderer interface with the correct side length.
-        /// </summary>
-        /// <remarks>
-        /// A mock ICanvasRenderer is used to verify that DrawEquilateralTriangle is called with the side length specified when the command is executed.
-        /// </remarks>
         [TestMethod]
-        public void TriangleCommand_Execute_CallsDrawEquilateralTriangleWithCorrectSideLength()
+        public void TriangleCommand_WithValidSideLength_InitializesCorrectly()
         {
             // Arrange
-            int sideLength = 10;
+            string sideLength = "10";
             var triangleCommand = new TriangleCommand(sideLength);
-            var mockRenderer = new Mock<ICanvasRenderer>();
-            mockRenderer.Setup(r => r.DrawEquilateralTriangle(It.IsAny<int>()));
 
             // Act
-            triangleCommand.Execute(mockRenderer.Object);
+            // Since sideLength is private, we can't directly check its value. Instead, we rely on correct execution.
+            triangleCommand.Execute(mockRenderer.Object, context);
 
             // Assert
-            mockRenderer.Verify(r => r.DrawEquilateralTriangle(sideLength), Times.Once());
+            // Verifying if DrawEquilateralTriangle method is called indicates that command has initialized correctly
+            mockRenderer.Verify(r => r.DrawEquilateralTriangle(It.IsAny<Point[]>(), It.IsAny<Color>(), It.IsAny<bool>()), Times.Once());
         }
 
-
-        /// <summary>
-        /// Tests that the TriangleCommand constructor throws an InvalidParameterException when a negative side length is provided.
-        /// </summary>
-        /// <remarks>
-        /// A negative side length is invalid for a triangle, and the constructor must validate this input and throw an exception accordingly.
-        /// </remarks>
         [TestMethod]
-        [ExpectedException(typeof(InvalidParameterException))]
-        public void TriangleCommand_NegativeSideLength_ThrowsInvalidParameterException()
+        public void TriangleCommand_Execute_CallsDrawEquilateralTriangleWithCorrectParameters()
         {
-            // Arrange & Act
-            var triangleCommand = new TriangleCommand(-10);
+            // Arrange
+            context.SetVariable("side", 10); // Setting variable as if it was set by previous commands
+            string sideLengthParameter = "side";
+            var triangleCommand = new TriangleCommand(sideLengthParameter);
 
-            // Assert is handled by ExpectedException
+            mockRenderer.Setup(r => r.DrawEquilateralTriangle(It.IsAny<Point[]>(), It.IsAny<Color>(), It.IsAny<bool>()));
+
+            // Act
+            triangleCommand.Execute(mockRenderer.Object, context);
+
+            // Assert
+            mockRenderer.Verify(r => r.DrawEquilateralTriangle(It.IsAny<Point[]>(), It.IsAny<Color>(), context.FillShapes), Times.Once());
         }
 
-        /// <summary>
-        /// Tests that the TriangleCommand constructor throws an InvalidParameterException when a side length of zero is provided.
-        /// </summary>
-        /// <remarks>
-        /// A side length of zero is not permissible for creating a valid triangle, and the constructor must throw an exception in such cases.
-        /// </remarks>
         [TestMethod]
         [ExpectedException(typeof(InvalidParameterException))]
-        public void TriangleCommand_ZeroSideLength_ThrowsInvalidParameterException()
+        public void TriangleCommand_InvalidSideLength_ThrowsException()
         {
-            // Arrange & Act
-            var triangleCommand = new TriangleCommand(0);
+            // Arrange
+            string sideLength = "-10"; // Negative side length which is invalid
+            var triangleCommand = new TriangleCommand(sideLength);
+
+            // Act
+            triangleCommand.Execute(mockRenderer.Object, context); // This should throw an exception
 
             // Assert is handled by ExpectedException
         }

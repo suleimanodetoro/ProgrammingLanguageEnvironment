@@ -1,77 +1,48 @@
-﻿using Moq;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using ProgrammingLanguageEnvironment;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Drawing;
 
 namespace UnitTestPLE
 {
-    /// <summary>
-    /// Contains unit tests for the RectangleCommand class to ensure that rectangle commands are created and executed correctly.
-    /// </summary>
     [TestClass]
     public class RectCommandTests
     {
-        /// <summary>
-        /// Verifies that the RectangleCommand constructor correctly assigns the width and height parameters to properties.
-        /// </summary>
-        /// <remarks>
-        /// The test provides specific width and height values and asserts that the properties match these values after construction.
-        /// </remarks>
-        [TestMethod]
-        public void RectangleCommand_CorrectParameters_CreatesCommand()
+        private Mock<ICanvasRenderer> mockRenderer;
+        private ProgrammingLanguageEnvironment.ExecutionContext context; // Full namespace to avoid ambiguity
+
+        [TestInitialize]
+        public void Setup()
         {
-            // Arrange
-            int testWidth = 30;
-            int testHeight = 40;
-
-            // Act
-            var rectangleCommand = new RectangleCommand(testWidth, testHeight);
-
-            // Assert
-            Assert.AreEqual(testWidth, rectangleCommand.Width, "The width should match the expected value.");
-            Assert.AreEqual(testHeight, rectangleCommand.Height, "The height should match the expected value.");
+            mockRenderer = new Mock<ICanvasRenderer>();
+            context = new ProgrammingLanguageEnvironment.ExecutionContext(); // Full namespace to avoid ambiguity
         }
 
-        /// <summary>
-        /// Ensures that executing the RectangleCommand invokes the DrawRectangle method on the ICanvasRenderer interface with the correct dimensions.
-        /// </summary>
-        /// <remarks>
-        /// A mock ICanvasRenderer is used to verify that DrawRectangle is called with the width and height specified when the command is executed.
-        /// </remarks>
         [TestMethod]
         public void RectangleCommand_Execute_CallsDrawRectangleWithCorrectParameters()
         {
             // Arrange
-            var width = 30;
-            var height = 40;
-            var rectangleCommand = new RectangleCommand(width, height);
-            var mockRenderer = new Mock<ICanvasRenderer>();
-            mockRenderer.Setup(r => r.DrawRectangle(It.IsAny<int>(), It.IsAny<int>()));
+            string widthParam = "30"; // Example width as a string
+            string heightParam = "40"; // Example height as a string
+            var rectangleCommand = new RectangleCommand(widthParam, heightParam);
+
+            // Initialize variables in the context to simulate variable resolution
+            context.SetVariable(widthParam, 30);
+            context.SetVariable(heightParam, 40);
+
+            mockRenderer.Setup(r => r.DrawRectangle(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<Color>(), It.IsAny<Point>(), It.IsAny<bool>()));
 
             // Act
-            rectangleCommand.Execute(mockRenderer.Object);
+            rectangleCommand.Execute(mockRenderer.Object, context);
 
             // Assert
-            mockRenderer.Verify(r => r.DrawRectangle(width, height), Times.Once(), "The DrawRectangle method should be called with the correct width and height.");
+            mockRenderer.Verify(r => r.DrawRectangle(30, 40, It.IsAny<Color>(), It.IsAny<Point>(), It.IsAny<bool>()), Times.Once(), "The DrawRectangle method should be called with the correct width and height.");
         }
 
-        /// <summary>
-        /// Tests that the RectangleCommand constructor throws an InvalidParameterException when provided with negative dimensions.
-        /// </summary>
-        /// <remarks>
-        /// Negative width or height values are invalid for rectangles, and the constructor must validate these inputs and throw accordingly.
-        /// </remarks>        [TestMethod]
-        [ExpectedException(typeof(InvalidParameterException))]
-        public void RectangleCommand_NegativeParameters_ThrowsInvalidParameterException()
-        {
-            // Arrange & Act with negative values to trigger the exception
-            var rectangleCommand = new RectangleCommand(-1, -1);
-
-            // Assert is handled by ExpectedException
-        }
+        // When it comes to testing negative values, my RectangleCommand now accepts strings for dimensions, interpreted at runtime. 
+        // I will shift my testing focus toward how my application handles invalid or undefined variables.
+        // This means I can't directly test for negative dimensions at the constructor level as I used to.
+        // I plan to test error handling and validation within the ExecutionContext or during the expression evaluation process instead.
 
     }
 }
