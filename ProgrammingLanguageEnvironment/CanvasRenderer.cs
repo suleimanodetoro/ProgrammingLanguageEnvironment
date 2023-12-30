@@ -4,7 +4,9 @@ using System.Windows.Forms;
 
 namespace ProgrammingLanguageEnvironment
 {
-
+    /// <summary>
+    /// Defines functionality for rendering graphics onto a canvas.
+    /// </summary>
     public interface ICanvasRenderer
     {
         void DrawPointer(Point position);
@@ -22,7 +24,9 @@ namespace ProgrammingLanguageEnvironment
         void Dispose();
     }
 
-
+    /// <summary>
+    /// Provides functionality for rendering shapes and text onto a canvas.
+    /// </summary>
     public class CanvasRenderer : ICanvasRenderer
     {
         // Fields representing the state of the CanvasRenderer
@@ -37,6 +41,10 @@ namespace ProgrammingLanguageEnvironment
         private Bitmap mainBitmap;
         private Bitmap cursorBitmap;
 
+        /// <summary>
+        /// Initializes a new instance of the CanvasRenderer class.
+        /// </summary>
+        /// <param name="canvas">The PictureBox control used as a drawing canvas.</param>
 
         public CanvasRenderer(PictureBox canvas)
         {
@@ -53,9 +61,15 @@ namespace ProgrammingLanguageEnvironment
  
         private void Canvas_Paint(object? sender, PaintEventArgs e)
         {
+            // Renders the main and cursor bitmaps onto the canvas.
             e.Graphics.DrawImage(mainBitmap, Point.Empty);
             e.Graphics.DrawImage(cursorBitmap, Point.Empty);
         }
+
+        /// <summary>
+        /// Draws a pointer at the specified position on the canvas.
+        /// </summary>
+        /// <param name="position">The position to place the pointer.</param>
 
         public void DrawPointer(Point position)
         {
@@ -69,6 +83,10 @@ namespace ProgrammingLanguageEnvironment
             }
         }
 
+        /// <summary>
+        /// Draws a pointer at the specified position on the cursor layer.
+        /// </summary>
+        /// <param name="position">The position to draw the pointer.</param>
         private void DrawPointerInternal(Point position)
         {
             using (Graphics cursorGraphics = Graphics.FromImage(cursorBitmap))
@@ -79,6 +97,9 @@ namespace ProgrammingLanguageEnvironment
             canvas.Invalidate();
         }
 
+        /// <summary>
+        /// Clears all graphics from the canvas.
+        /// </summary>
         public void ClearCanvas()
         {
             if (canvas.InvokeRequired)
@@ -91,6 +112,9 @@ namespace ProgrammingLanguageEnvironment
             }
         }
 
+        /// <summary>
+        /// Clears the canvas of all drawings.
+        /// </summary>
         public void ClearCanvasInternal()
         {
             graphics.Clear(canvas.BackColor);
@@ -103,6 +127,10 @@ namespace ProgrammingLanguageEnvironment
         }
 
 
+        /// <summary>
+        /// Moves the drawing pointer to the specified target location.
+        /// </summary>
+        /// <param name="target">The target position to move the pointer to.</param>
 
         public void MoveTo(Point target)
         {
@@ -116,13 +144,23 @@ namespace ProgrammingLanguageEnvironment
             }
         }
 
+        /// <summary>
+        /// Moves the current position of the drawing pointer to the specified target location.
+        /// </summary>
+        /// <param name="target">The target position to move the pointer to.</param>
         private void MoveToInternal(Point target)
         {
             currentPosition = target;
             DrawPointer(currentPosition);
         }
 
-
+        /// <summary>
+        /// Draws a circle with the specified parameters.
+        /// </summary>
+        /// <param name="radius">The radius of the circle.</param>
+        /// <param name="color">The color of the circle.</param>
+        /// <param name="position">The position to draw the circle.</param>
+        /// <param name="fill">Whether the circle is filled.</param>
         public void DrawCircle(int radius, Color color, Point position, bool fill)
         {
             if (canvas.InvokeRequired)
@@ -135,6 +173,14 @@ namespace ProgrammingLanguageEnvironment
             }
         }
 
+
+        /// <summary>
+        /// Draws a circle on the canvas.
+        /// </summary>
+        /// <param name="radius">The radius of the circle.</param>
+        /// <param name="color">The color of the circle.</param>
+        /// <param name="position">The center position of the circle.</param>
+        /// <param name="fill">Whether the circle is filled.</param>
         private void DrawCircleInternal(int radius, Color color, Point position, bool fill)
         {
             Brush brush = new SolidBrush(color);
@@ -151,7 +197,12 @@ namespace ProgrammingLanguageEnvironment
 
 
 
-
+        /// <summary>
+        /// Draws a line between two points with the specified color.
+        /// </summary>
+        /// <param name="startPoint">The starting point of the line.</param>
+        /// <param name="endPoint">The ending point of the line.</param>
+        /// <param name="color">The color of the line.</param>
         public void DrawLine(Point startPoint, Point endPoint, Color color)
         {
             if (canvas.InvokeRequired)
@@ -164,6 +215,12 @@ namespace ProgrammingLanguageEnvironment
             }
         }
 
+        /// <summary>
+        /// Draws a line between two points.
+        /// </summary>
+        /// <param name="startPoint">The starting point of the line.</param>
+        /// <param name="endPoint">The ending point of the line.</param>
+        /// <param name="color">The color of the line.</param>
         private void DrawLineInternal(Point startPoint, Point endPoint, Color color)
         {
             using (var pen = new Pen(color))
@@ -173,6 +230,15 @@ namespace ProgrammingLanguageEnvironment
             canvas.Invalidate();
         }
 
+
+        /// <summary>
+        /// Draws a rectangle with the specified width, height, color, position, and fill status.
+        /// </summary>
+        /// <param name="width">Width of the rectangle.</param>
+        /// <param name="height">Height of the rectangle.</param>
+        /// <param name="color">Color of the rectangle.</param>
+        /// <param name="position">Position to place the rectangle.</param>
+        /// <param name="fill">Whether the rectangle is filled.</param>
 
         public void DrawRectangle(int width, int height, Color color, Point position, bool fill)
         {
@@ -186,6 +252,14 @@ namespace ProgrammingLanguageEnvironment
             }
         }
 
+        /// <summary>
+        /// Draws a rectangle on the canvas.
+        /// </summary>
+        /// <param name="width">Width of the rectangle.</param>
+        /// <param name="height">Height of the rectangle.</param>
+        /// <param name="color">Color of the rectangle.</param>
+        /// <param name="position">Top-left position of the rectangle.</param>
+        /// <param name="fill">Whether the rectangle is filled.</param>
         private void DrawRectangleInternal(int width, int height, Color color, Point position, bool fill)
         {
             Brush brush = new SolidBrush(color);
@@ -201,6 +275,12 @@ namespace ProgrammingLanguageEnvironment
             canvas.Invalidate();
         }
 
+        /// <summary>
+        /// Draws an equilateral triangle with specified vertices, color, and fill status.
+        /// </summary>
+        /// <param name="vertices">The vertices of the triangle.</param>
+        /// <param name="color">The color of the triangle.</param>
+        /// <param name="fill">Whether the triangle is filled.</param>
         public void DrawEquilateralTriangle(Point[] vertices, Color color, bool fill)
         {
             if (canvas.InvokeRequired)
@@ -213,6 +293,12 @@ namespace ProgrammingLanguageEnvironment
             }
         }
 
+        /// <summary>
+        /// Draws an equilateral triangle on the canvas.
+        /// </summary>
+        /// <param name="vertices">The vertices of the triangle.</param>
+        /// <param name="color">The color of the triangle.</param>
+        /// <param name="fill">Whether the triangle is filled.</param>
         private void DrawEquilateralTriangleInternal(Point[] vertices, Color color, bool fill)
         {
             Brush brush = new SolidBrush(color);
@@ -227,7 +313,10 @@ namespace ProgrammingLanguageEnvironment
             canvas.Invalidate();
         }
 
-
+        /// <summary>
+        /// Sets the current pen color to the specified color.
+        /// </summary>
+        /// <param name="color">The color to set the pen.</param>
         public void SetPenColor(Color color)
         {
             if (canvas.InvokeRequired)
@@ -240,7 +329,10 @@ namespace ProgrammingLanguageEnvironment
             }
         }
 
-
+        /// <summary>
+        /// Sets whether shapes are filled when drawn.
+        /// </summary>
+        /// <param name="fill">True to fill shapes, false otherwise.</param>
         public void SetFill(bool fill)
         {
             if (canvas.InvokeRequired)
@@ -253,7 +345,9 @@ namespace ProgrammingLanguageEnvironment
             }
         }
 
-
+        /// <summary>
+        /// Resets the current position of the drawing pointer to the top-left corner of the canvas.
+        /// </summary>
         public void ResetPosition()
         {
             if (canvas.InvokeRequired)
@@ -270,7 +364,10 @@ namespace ProgrammingLanguageEnvironment
             }
         }
 
-
+        /// <summary>
+        /// Executes a list of commands, rendering the appropriate graphics.
+        /// </summary>
+        /// <param name="commands">The commands to execute.</param>
         public void ExecuteCommands(List<Command> commands)
         {
             ExecutionContext context = new ExecutionContext();
