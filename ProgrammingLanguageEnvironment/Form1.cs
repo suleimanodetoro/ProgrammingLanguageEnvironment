@@ -1,7 +1,7 @@
 namespace ProgrammingLanguageEnvironment
 {
     /// <summary>
-    /// this class represents the main form for the Command Parser application.
+    /// Represents the main form for the Command Parser application, handling user interactions and command processing.
     /// </summary>
     public partial class CommandParserForm : Form
     {
@@ -9,8 +9,12 @@ namespace ProgrammingLanguageEnvironment
         private readonly IFileService _fileService;
         private List<IEnumerable<string>> _loadedCommands = new List<IEnumerable<string>>();
         private readonly CommandParser _commandParser; 
-        private readonly ICanvasRenderer _canvasRenderer; 
+        private readonly ICanvasRenderer _canvasRenderer;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CommandParserForm"/> class.
+        /// Sets up the command parser, renderer, and event handlers for user interactions.
+        /// </summary>
         public CommandParserForm()
         {
             InitializeComponent();
@@ -32,7 +36,11 @@ namespace ProgrammingLanguageEnvironment
             this.loadCodeButton.Click += new EventHandler(this.loadBtn_Click);
         }
 
-
+        /// <summary>
+        /// Executes multiple sets of commands in parallel.
+        /// </summary>
+        /// <param name="commandLists">A list of command sets, where each set represents a sequence of commands.</param>
+        /// <returns>A task that represents the asynchronous operation of executing commands in parallel.</returns>
         private async Task ExecuteCommandsInParallel(List<IEnumerable<string>> commandLists)
         {
             var tasks = commandLists.Select(commands =>
@@ -54,10 +62,10 @@ namespace ProgrammingLanguageEnvironment
 
 
         /// <summary>
-        /// Handles the Run button click event to execute commands.
+        /// Executes commands when the 'Run' button is clicked.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
-        /// <param name="e">An <see cref="EventArgs"/> that contains the event data.</param>
+        /// <param name="e">Event data.</param>
         private void RunButton_Click(object? sender, EventArgs e)
         {
             // Delegate command execution to CommandService
@@ -77,10 +85,10 @@ namespace ProgrammingLanguageEnvironment
 
 
         /// <summary>
-        /// Handles the Syntax Check button click event.
+        /// Checks the syntax of the provided commands when the 'Syntax Check' button is clicked.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
-        /// <param name="e">An <see cref="EventArgs"/> that contains the event data.</param>
+        /// <param name="e">Event data.</param>
         private void SyntaxButton_Click(object? sender, EventArgs e)
         {
             _commandService.ClearCanvas();
@@ -104,10 +112,10 @@ namespace ProgrammingLanguageEnvironment
 
 
         /// <summary>
-        /// Handles the Save button click event to save commands to a file.
+        /// Saves the current commands to a file when the 'Save' button is clicked.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
-        /// <param name="e">An <see cref="EventArgs"/> that contains the event data.</param>
+        /// <param name="e">Event data.</param>
         private void saveBtn_Click(object sender, EventArgs e)
         {
             SaveCommands();
@@ -115,11 +123,10 @@ namespace ProgrammingLanguageEnvironment
         }
 
         /// <summary>
-        /// Handles the Load button click event to load commands from a file.
+        /// Loads commands from a file when the 'Load' button is clicked.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
-        /// <param name="e">An <see cref="EventArgs"/> that contains the event data.</param>
-        // Event handler for the 'Load' button click
+        /// <param name="e">Event data.</param>
         private void loadBtn_Click(object sender, EventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog
@@ -147,9 +154,8 @@ namespace ProgrammingLanguageEnvironment
             }
         }
 
-        // Method to save commands to a file. The defuatl file name will be commands.txt
         /// <summary>
-        /// Saves the current commands to a file.
+        /// Saves the currently entered commands to a file.
         /// </summary>
         private void SaveCommands()
         {
@@ -179,23 +185,31 @@ namespace ProgrammingLanguageEnvironment
         }
 
 
-        // Method to retrieve commands from the input fields (i.e The multiline TextBox in my app)
+        /// <summary>
+        /// Retrieves commands from the input fields.
+        /// </summary>
+        /// <returns>An enumerable collection of strings representing commands.</returns>
         private IEnumerable<string> GetCommandsFromInput()
         {
             // Check the multiline TextBox for command input
             return multiLineCommand.Lines;
         }
 
+        /// <summary>
+        ///Event listener for multiline text field change
+        /// </summary>
         private void multiLineCommand_TextChanged(object sender, EventArgs e)
         {
 
         }
 
-        private void loadCodeButton_Click(object sender, EventArgs e)
-        {
+        
 
-        }
-
+        /// <summary>
+        /// Executes commands in parallel when the 'Run Parallel' button is clicked.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">Event data.</param>
         private async void runParallelButton_Click(object sender, EventArgs e)
         {
             await Console.Out.WriteLineAsync("This button is working");
