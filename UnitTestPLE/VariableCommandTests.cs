@@ -5,12 +5,19 @@ using System.Drawing;
 
 namespace UnitTestPLE
 {
+    /// <summary>
+    /// Test class for verifying variable-related functionality within the programming language environment.
+    /// </summary>
     [TestClass]
     public class VariableTests
     {
         private Mock<ICanvasRenderer> mockRenderer;
         private ProgrammingLanguageEnvironment.ExecutionContext context;
 
+
+        /// <summary>
+        /// Initializes variables and mocks before each test.
+        /// </summary>
         [TestInitialize]
         public void Setup()
         {
@@ -19,7 +26,9 @@ namespace UnitTestPLE
         }
 
 
-        //The following is for testing varibale command 
+        /// <summary>
+        /// Verifies that the VariableCommand sets a variable within the execution context.
+        /// </summary>
         [TestMethod]
         public void Should_SetVariable_When_VariableCommandExecuted()
         {
@@ -30,11 +39,13 @@ namespace UnitTestPLE
             command.Execute(mockRenderer.Object, context);
 
             // Assert
-            Assert.AreEqual(10, context.Variables["x"]);
+            Assert.AreEqual(10, context.Variables["x"], "Variable x should be set to 10");
         }
 
 
-        //the following is for testing is variables are assigned to values
+        /// <summary>
+        /// Tests if the AssignmentCommand updates the value of a variable.
+        /// </summary>
         [TestMethod]
         public void Should_UpdateVariable_When_AssignmentCommandExecuted()
         {
@@ -46,23 +57,25 @@ namespace UnitTestPLE
             command.Execute(mockRenderer.Object, context);
 
             // Assert
-            Assert.AreEqual(20, context.Variables["x"]);
+            Assert.AreEqual(20, context.Variables["x"], "Variable x should be updated to 20");
         }
 
 
-        //the following is for testing expression or redefinitions work
+        /// <summary>
+        /// Ensures that AssignmentCommand correctly evaluates and assigns expressions to variables.
+        /// </summary>
         [TestMethod]
         public void Should_EvaluateExpression_When_AssignmentCommandExecuted()
         {
             // Arrange
             context.SetVariable("x", 10); // Initial value
-            var command = new AssignmentCommand("x", "x + 15"); // Increment x by 15
+            var command = new AssignmentCommand("x", "x + 15"); // Expression to increment x by 15
 
             // Act
             command.Execute(mockRenderer.Object, context);
 
             // Assert
-            Assert.AreEqual(25, context.Variables["x"]);
+            Assert.AreEqual(25, context.Variables["x"], "Variable x should be incremented to 25");
         }
 
 
