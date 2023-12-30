@@ -7,6 +7,9 @@ using System.Drawing;
 
 namespace UnitTestPLE
 {
+    /// <summary>
+    /// Provides tests for the WhileCommand class to ensure proper loop execution and control.
+    /// </summary>
     [TestClass]
     public class WhileCommandTests
     {
@@ -15,6 +18,10 @@ namespace UnitTestPLE
         private WhileCommand whileCommand;
         private List<Command> loopCommands;
 
+
+        /// <summary>
+        /// Initializes variables, mocks, and context for each test run.
+        /// </summary>
         [TestInitialize]
         public void Initialize()
         {
@@ -28,13 +35,17 @@ namespace UnitTestPLE
             whileCommand = new WhileCommand("x < 5", loopCommands);
         }
 
+
+        /// <summary>
+        /// Tests that the WhileCommand executes its loop body until the condition becomes false.
+        /// </summary>
         [TestMethod]
         public void WhileCommand_ExecutesUntilConditionIsFalse()
         {
             // Setup an increment command to increment 'x' within the loop.
             context.SetVariable("x", 0); // Ensure 'x' starts at 0
 
-            // Create a command that increments 'x' each time it's executed.
+            // Arrange: Adding a command to increment 'x' in the loop body.
             var incrementCommand = new Mock<Command>();
             incrementCommand.Setup(c => c.Execute(It.IsAny<ICanvasRenderer>(), It.IsAny<ExecutionContext>()))
                             .Callback(() => {
@@ -48,7 +59,7 @@ namespace UnitTestPLE
             // Create a new WhileCommand with the updated loop commands
             whileCommand = new WhileCommand("x < 5", loopCommands);
 
-            // Execute the while command
+            // Act: Execute the while command with the context and renderer.
             whileCommand.Execute(mockRenderer.Object, context);
 
             // Asserting the loop ran 5 times, causing 'x' to increment from 0 to 5
@@ -56,19 +67,25 @@ namespace UnitTestPLE
         }
 
 
+        /// <summary>
+        /// Tests that the WhileCommand does not execute its loop body when the initial condition is false.
+        /// </summary>
         [TestMethod]
         public void WhileCommand_StopsWhenConditionInitiallyFalse()
         {
-            // Set x to 5, so loop condition is false initially (x < 5)
+            // Arrange: Set 'x' to a value that makes the loop condition initially false.
             context.SetVariable("x", 5);
 
-            // Execute the while command
+            // Act: Execute the while command
             whileCommand.Execute(mockRenderer.Object, context);
 
             // Asserting no loop runs as 'x' starts at 5, making the condition initially false
             Assert.AreEqual(5, context.GetVariableValue("x"), "No loop iterations should occur if condition is initially false");
         }
 
+        /// <summary>
+        /// Tests that the WhileCommand correctly executes all commands within the loop body.
+        /// </summary>
         [TestMethod]
         public void WhileCommand_ExecutesInnerCommandsCorrectly()
         {
@@ -77,6 +94,7 @@ namespace UnitTestPLE
 
             // Setup a simple inner command to track execution
             var innerCommandExecuted = 0;
+            // Arrange: Setup a mock command or series of commands as the loop body.
             var incrementCommand = new Mock<Command>();
             incrementCommand.Setup(c => c.Execute(It.IsAny<ICanvasRenderer>(), It.IsAny<ExecutionContext>()))
                             .Callback(() => {
@@ -88,11 +106,11 @@ namespace UnitTestPLE
             loopCommands.Clear();
             loopCommands.Add(incrementCommand.Object); // Add mock command to loop commands
 
-            // Execute the while command
+            // Act: Execute the while command
             whileCommand = new WhileCommand("x < 5", loopCommands); // Ensure whileCommand uses the updated loopCommands
             whileCommand.Execute(mockRenderer.Object, context);
 
-            // Asserting x was incremented 5 times from 0 to 5
+            // Assert: x was incremented 5 times from 0 to 5
             Assert.AreEqual(5, innerCommandExecuted, "Inner command should execute 5 times as per loop condition");
         }
     }
