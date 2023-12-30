@@ -8,6 +8,9 @@ using ExecutionContext = ProgrammingLanguageEnvironment.ExecutionContext;
 
 namespace UnitTestPLE
 {
+    /// <summary>
+    /// Test class for testing the IfCommand functionality in the programming language environment.
+    /// </summary
     [TestClass]
     public class IfCommandTests
     {
@@ -16,6 +19,9 @@ namespace UnitTestPLE
         private Command trueCommand; // Command to execute when condition is true
         private Command falseCommand; // Command to execute when condition is false
 
+        /// <summary>
+        /// Initializes variables and mock objects for each test.
+        /// </summary>
         [TestInitialize]
         public void Initialize()
         {
@@ -31,8 +37,9 @@ namespace UnitTestPLE
             context.SetVariable("y", 10);
         }
 
-        //Test if command when if condition is true
-
+        /// <summary>
+        /// Tests that IfCommand executes the true branch when the condition is true.
+        /// </summary>
         [TestMethod]
         public void IfCommand_ShouldExecuteCommands_WhenConditionIsTrue()
         {
@@ -48,12 +55,14 @@ namespace UnitTestPLE
             Assert.AreEqual(new Point(10, 20), context.CurrentPosition, "The context's position should be updated by the trueCommand.");
         }
 
-        // The following is for when IfCommand gets False Condition
+        /// <summary>
+        /// Tests that IfCommand does not execute any commands when the condition is false.
+        /// </summary>
         [TestMethod]
         public void IfCommand_ShouldNotExecuteCommands_WhenConditionIsFalse()
         {
             // Arrange
-            context.SetVariable("x", 20); // Change the condition to be false
+            context.SetVariable("x", 20); // Change the condition to be false (20 < 10)
             var ifCommands = new List<Command> { trueCommand };
             var ifCommand = new IfCommand("x < y", ifCommands);
 
@@ -64,7 +73,11 @@ namespace UnitTestPLE
             // Check that the context's position is unchanged
             Assert.AreNotEqual(new Point(10, 20), context.CurrentPosition, "The context's position should not be updated by the trueCommand.");
         }
-        //The following test is for IfCommand throwing exception on Invalid Condition
+
+
+        /// <summary>
+        /// Tests that IfCommand throws an exception when provided with an invalid condition format.
+        /// </summary>
         [TestMethod]
         [ExpectedException(typeof(Exception), "An invalid condition format should throw an exception.")]
         public void IfCommand_ShouldThrowException_OnInvalidCondition()
