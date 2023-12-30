@@ -28,18 +28,19 @@ namespace ProgrammingLanguageEnvironment
 
 
         // New method for executing multiple command sets in parallel
-        public async Task ExecuteCommandsParallel(IEnumerable<string> commandSets)
+        public async Task ExecuteCommandsParallel(IEnumerable<IEnumerable<string>> commandSets)
         {
-            var tasks = commandSets.Select(commands =>
+            var tasks = commandSets.Select(commandsSet =>
             {
                 return Task.Run(() =>
                 {
-                    ExecuteCommands(commands);
+                    ExecuteCommands(String.Join(Environment.NewLine, commandsSet));
                 });
             });
 
             await Task.WhenAll(tasks);
         }
+
 
         public bool CheckSyntax(string commands, out string errorMessage)
         {

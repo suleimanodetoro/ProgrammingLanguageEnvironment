@@ -34,6 +34,8 @@ namespace ProgrammingLanguageEnvironment
         public override void Execute(ICanvasRenderer renderer, ExecutionContext context)
         {
             context.CurrentColor = penColor;
+            renderer.SetPenColor(penColor);   // Setting the pen color on the renderer
+
         }
 
 
