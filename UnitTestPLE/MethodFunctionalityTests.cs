@@ -7,6 +7,9 @@ using System.Drawing;
 
 namespace UnitTestPLE
 {
+    /// <summary>
+    /// Test class to validate method functionality within the programming language environment.
+    /// </summary>
     [TestClass]
     public class MethodFunctionalityTests
     {
@@ -15,16 +18,23 @@ namespace UnitTestPLE
         private MethodCommand methodCommand;
         private MethodCallCommand methodCallCommand;
 
+
+        /// <summary>
+        /// Initializes mock objects and context for each test.
+        /// </summary>
         [TestInitialize]
         public void Initialize()
         {
             mockRenderer = new Mock<ICanvasRenderer>();
             context = new ExecutionContext();
-            // Assuming "TestMethod" is the name of the method and it takes no parameters
+            // Setup a dummy method command with no parameters and body for testing
             methodCommand = new MethodCommand("TestMethod", new List<string>(), new List<Command>());
             methodCallCommand = new MethodCallCommand("TestMethod", new List<string>());
         }
-        //This test verifies that a method can be defined and then retrieved correctly.
+
+        /// <summary>
+        /// Verifies that a method can be defined in the execution context and then retrieved correctly.
+        /// </summary>
         [TestMethod]
         public void Method_IsCorrectlyDefinedAndRetrieved()
         {
@@ -40,11 +50,13 @@ namespace UnitTestPLE
         }
 
 
-        //The following test ensures that when a method is called, all the commands within that method are executed.
+        /// <summary>
+        /// Verifies that all commands within a method are executed when the method is called.
+        /// </summary>
         [TestMethod]
         public void MethodCall_ExecutesAllCommands()
         {
-            // Setting up a command to add to the method
+            // Setting up a command to add to the method's body
             var moveToCommand = new MoveToCommand("10", "20");
             methodCommand.MethodBody.Add(moveToCommand);
 
@@ -57,16 +69,15 @@ namespace UnitTestPLE
             // Executing the method call
             methodCallCommand.Execute(mockRenderer.Object, context);
 
-            // Verifying the MoveTo command within the method was called
+            // Verifying that the MoveTo command within the method was called
             mockRenderer.Verify(r => r.MoveTo(It.IsAny<Point>()), Times.Once(), "MoveTo should be called once within the method");
         }
-        
-        
-        
-        /*
-         The following test will ensure that actual parameters provided in a method call are correctly mapped to the method's formal parameters.
-        */
 
+
+
+        /// <summary>
+        /// Ensures that actual parameters provided in a method call are correctly mapped to the method's formal parameters.
+        /// </summary>
         [TestMethod]
         public void MethodCall_CorrectlyMapsParameters()
         {
