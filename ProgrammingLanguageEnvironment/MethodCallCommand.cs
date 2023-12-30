@@ -2,10 +2,19 @@
 
 namespace ProgrammingLanguageEnvironment
 {
+    /// <summary>
+    /// Represents a command to call a method.
+    /// </summary>
     public class MethodCallCommand : Command
     {
         private string methodName;
         private List<string> actualParameters;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MethodCallCommand"/> class.
+        /// </summary>
+        /// <param name="methodName">The name of the method to call.</param>
+        /// <param name="actualParameters">The actual parameters to pass to the method.</param>
 
         public MethodCallCommand(string methodName, List<string> actualParameters)
         {
@@ -13,6 +22,11 @@ namespace ProgrammingLanguageEnvironment
             this.actualParameters = actualParameters;
         }
 
+        /// <summary>
+        /// Executes the method call command, invoking the specified method with the provided parameters.
+        /// </summary>
+        /// <param name="renderer">The canvas renderer.</param>
+        /// <param name="context">The current execution context.</param>
         public override void Execute(ICanvasRenderer renderer, ExecutionContext context)
         {
             // Try to retrieve the method from the context
