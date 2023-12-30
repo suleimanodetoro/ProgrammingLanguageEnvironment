@@ -8,23 +8,38 @@ using System.Drawing;
 
 namespace UnitTestPLE
 {
+    /// <summary>
+    /// Tests to ensure the CommandService's asynchronous execution of commands behaves as expected.
+    /// </summary>
     [TestClass]
     public class ThreadingTests
     {
+        // Mocks for file and canvas services.
         private Mock<IFileService> _mockFileService;
         private Mock<ICanvasRenderer> _mockCanvasRenderer;
+        // Services to be tested
         private CommandService _commandService;
         private CommandParser _commandParser;
 
+
+        /// <summary>
+        /// Sets up mocks and instances for each test.
+        /// </summary>
         [TestInitialize]
         public void Setup()
         {
+            // Initialization of mocks and services for test setup
             _mockFileService = new Mock<IFileService>();
             _mockCanvasRenderer = new Mock<ICanvasRenderer>();
             _commandParser = new CommandParser();
             _commandService = new CommandService(_commandParser, _mockCanvasRenderer.Object);
         }
 
+        /// <summary>
+        /// Determines the color from a string command.
+        /// </summary>
+        /// <param name="command">Command containing color information.</param>
+        /// <returns>Color object corresponding to the string.</returns>
         private Color DetermineColorFromCommand(string command)
         {
             // This is a simplistic example
@@ -42,12 +57,16 @@ namespace UnitTestPLE
             }
         }
 
+        /// <summary>
+        /// Verifies that commands are executed without throwing any errors when executed in parallel.
+        /// </summary>
         [TestMethod]
         public async Task ExecuteCommandsParallel_ShouldExecuteWithoutErrors()
         {
             // Arrange
             List<IEnumerable<string>> commandSets = new List<IEnumerable<string>>
             {
+                // Example command sets
                 new[] { "pen red", "rect 15,15" },
                 new[] { "pen blue", "circle 15" },
 
@@ -68,11 +87,16 @@ namespace UnitTestPLE
             _mockCanvasRenderer.Verify(renderer => renderer.DrawRectangle(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<Color>(), It.IsAny<Point>(), It.IsAny<bool>()), Times.AtLeastOnce());
         }
 
+        /// <summary>
+        /// Verifies that commands are executed not only without errors but also ensuring they are processed in parallel, implying performance gain.
+        /// </summary>
         [TestMethod]
         public async Task ExecuteCommandsParallel_ShouldExecuteWithoutErrorsAndInParallel()
         {
-            // Arrange
+            // Arrange: Prepare a set of commands and a stopwatch to time the operation.
+
             List<IEnumerable<string>> commandSets = new List<IEnumerable<string>> {
+                //Example command set
                 new[] { "pen red", "rect 15,15" },
                 new[] { "pen blue", "circle 15" },
                 new[] { "pen green", "tri 15" },
