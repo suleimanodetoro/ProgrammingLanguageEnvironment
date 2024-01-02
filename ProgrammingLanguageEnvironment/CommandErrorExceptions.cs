@@ -47,4 +47,19 @@ namespace ProgrammingLanguageEnvironment
 
         public ExecutionException(string message) : base(message) { }
     }
+
+    //Error handling for commands to report lines where it occured
+    public class CommandException : Exception
+    {
+        public int LineNumber { get; }
+        public string CommandText { get; }
+
+        public CommandException(string message, int lineNumber = -1, string commandText = "")
+            : base($"{message} At line {lineNumber}: '{commandText}'.")
+        {
+            LineNumber = lineNumber;
+            CommandText = commandText;
+        }
+    }
+
 }

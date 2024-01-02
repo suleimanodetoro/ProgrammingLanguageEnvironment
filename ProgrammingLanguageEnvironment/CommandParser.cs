@@ -45,88 +45,103 @@ namespace ProgrammingLanguageEnvironment
 
 
             var lines = rawInput.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+            int lineNumber = 0;  // Initialize line number counter
 
             foreach (var line in lines)
             {
+                lineNumber++;  // Increment at the start of the loop
                 string trimmedLine = line.Trim();
-                if (trimmedLine.StartsWith("while"))
+                try
                 {
-                    isInsideLoop = true;
-                    loopCondition = trimmedLine.Substring("while".Length).Trim();
-                    loopCommands.Clear();
-                }
-                else if (trimmedLine.StartsWith("endloop") && isInsideLoop)
-                {
-                    isInsideLoop = false;
-                    commands.Add(new WhileCommand(loopCondition, new List<Command>(loopCommands)));
-                    loopCommands.Clear();
-                }
-                else if (trimmedLine.StartsWith("if"))
-                {
-                    var condition = trimmedLine.Substring(2).Trim();
-                    ifCommandStack.Push(new KeyValuePair<string, List<Command>>(condition, new List<Command>()));
-                }
-                else if (trimmedLine == "endif" && ifCommandStack.Count > 0)
-                {
-                    var ifData = ifCommandStack.Pop();
-                    if (ifCommandStack.Count > 0)
+                    if (trimmedLine.StartsWith("while"))
                     {
-                        ifCommandStack.Peek().Value.Add(new IfCommand(ifData.Key, ifData.Value));
+                        isInsideLoop = true;
+                        loopCondition = trimmedLine.Substring("while".Length).Trim();
+                        loopCommands.Clear();
+                    }
+                    else if (trimmedLine.StartsWith("endloop") && isInsideLoop)
+                    {
+                        isInsideLoop = false;
+                        commands.Add(new WhileCommand(loopCondition, new List<Command>(loopCommands)));
+                        loopCommands.Clear();
+                    }
+                    else if (trimmedLine.StartsWith("if"))
+                    {
+                        var condition = trimmedLine.Substring(2).Trim();
+                        ifCommandStack.Push(new KeyValuePair<string, List<Command>>(condition, new List<Command>()));
+                    }
+                    else if (trimmedLine == "endif" && ifCommandStack.Count > 0)
+                    {
+                        var ifData = ifCommandStack.Pop();
+                        if (ifCommandStack.Count > 0)
+                        {
+                            ifCommandStack.Peek().Value.Add(new IfCommand(ifData.Key, ifData.Value));
+                        }
+                        else
+                        {
+                            commands.Add(new IfCommand(ifData.Key, ifData.Value));
+                        }
+                    }
+                    else if (trimmedLine.StartsWith("method"))
+                    {
+                        // Handling method definition
+                        var methodParts = trimmedLine.Substring("method".Length).Trim().Split(new[] { ' ' }, 2);
+                        string methodName = methodParts[0].Trim();
+                        var parameters = methodParts.Length > 1 ? methodParts[1].Trim('(', ')').Split(',').Select(p => p.Trim()).ToList() : new List<string>();
+
+                        // Push a new MethodData to the stack
+                        methodCommandsStack.Push(new MethodData(methodName, parameters));
+                    }
+                    else if (trimmedLine.StartsWith("endmethod") && methodCommandsStack.Count > 0)
+                    {
+                        // Pop the MethodData and add it to the commands list
+                        var methodData = methodCommandsStack.Pop();
+                        var methodCommand = new MethodCommand(methodData.MethodName, methodData.Parameters, methodData.Commands);
+
+                        // Add MethodCommand to the main commands list for execution
+                        commands.Add(methodCommand);
+
+                        //context.AddMethod(methodCommand);
+                    }
+
+                    else if (trimmedLine.Contains("(") && trimmedLine.Contains(")"))
+                    {
+                        var methodCallParts = trimmedLine.Split(new char[] { '(', ')' }, StringSplitOptions.RemoveEmptyEntries);
+                        string methodName = methodCallParts[0].Trim();
+                        var actualParameters = methodCallParts[1].Split(',').Select(p => p.Trim()).ToList();
+                        commands.Add(new MethodCallCommand(methodName, actualParameters));
                     }
                     else
                     {
-                        commands.Add(new IfCommand(ifData.Key, ifData.Value));
+                        var command = commandFactory.CreateCommand(line);
+                        if (isInsideLoop)
+                            loopCommands.Add(command);
+                        else if (ifCommandStack.Count > 0)
+                            ifCommandStack.Peek().Value.Add(command);
+                        else if (methodCommandsStack.Count > 0)
+                            methodCommandsStack.Peek().Commands.Add(command);
+                        else
+                            commands.Add(command);
                     }
-                }
-                else if (trimmedLine.StartsWith("method"))
+
+                } catch (CommandException)
                 {
-                    // Handling method definition
-                    var methodParts = trimmedLine.Substring("method".Length).Trim().Split(new[] { ' ' }, 2);
-                    string methodName = methodParts[0].Trim();
-                    var parameters = methodParts.Length > 1 ? methodParts[1].Trim('(', ')').Split(',').Select(p => p.Trim()).ToList() : new List<string>();
+                    throw;
 
-                    // Push a new MethodData to the stack
-                    methodCommandsStack.Push(new MethodData(methodName, parameters));
-                }
-                else if (trimmedLine.StartsWith("endmethod") && methodCommandsStack.Count > 0)
+                } catch (Exception ex)
                 {
-                    // Pop the MethodData and add it to the commands list
-                    var methodData = methodCommandsStack.Pop();
-                    var methodCommand = new MethodCommand(methodData.MethodName, methodData.Parameters, methodData.Commands);
-
-                    // Add MethodCommand to the main commands list for execution
-                    commands.Add(methodCommand);
-
-                    //context.AddMethod(methodCommand);
+                    // Include the type of the original exception, message, and line number
+                    throw new CommandException($"[{ex.GetType().Name}] {ex.Message}", lineNumber, line);
                 }
 
-                else if (trimmedLine.Contains("(") && trimmedLine.Contains(")"))
-                {
-                    var methodCallParts = trimmedLine.Split(new char[] { '(', ')' }, StringSplitOptions.RemoveEmptyEntries);
-                    string methodName = methodCallParts[0].Trim();
-                    var actualParameters = methodCallParts[1].Split(',').Select(p => p.Trim()).ToList();
-                    commands.Add(new MethodCallCommand(methodName, actualParameters));
-                }
-                else
-                {
-                    var command = commandFactory.CreateCommand(line);
-                    if (isInsideLoop)
-                        loopCommands.Add(command);
-                    else if (ifCommandStack.Count > 0)
-                        ifCommandStack.Peek().Value.Add(command);
-                    else if (methodCommandsStack.Count > 0)
-                        methodCommandsStack.Peek().Commands.Add(command);  
-                    else
-                        commands.Add(command);
-                }
             }
-
+            // After parsing all lines, check for any unclosed structures
             if (isInsideLoop)
-                throw new InvalidOperationException("Unclosed loop found in script.");
+                throw new CommandException("Unclosed loop found in script.", lineNumber, lines.LastOrDefault());
             if (ifCommandStack.Count > 0)
-                throw new InvalidOperationException("Unclosed if block found in script.");
+                throw new CommandException("Unclosed if block found in script.", lineNumber, lines.LastOrDefault());
             if (methodCommandsStack.Count > 0)
-                throw new InvalidOperationException("Unclosed method block found in script.");
+                throw new CommandException("Unclosed method block found in script.", lineNumber, lines.LastOrDefault());
 
 
             return commands;

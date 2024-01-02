@@ -27,19 +27,37 @@ namespace ProgrammingLanguageEnvironment
         }
 
 
-        // New method for executing multiple command sets in parallel
-        public async Task ExecuteCommandsParallel(IEnumerable<IEnumerable<string>> commandSets)
+        // New method for executing multiple command sets in threads concurrently 
+        public Task ExecuteCommandsParallel(IEnumerable<IEnumerable<string>> commandSets)
         {
-            var tasks = commandSets.Select(commandsSet =>
-            {
-                return Task.Run(() =>
-                {
-                    ExecuteCommands(String.Join(Environment.NewLine, commandsSet));
-                });
-            });
+            List<Thread> threads = new List<Thread>();
 
-            await Task.WhenAll(tasks);
+            foreach (var commands in commandSets)
+            {
+                Thread thread = new Thread(() =>
+                {
+                    ExecutionContext context = new ExecutionContext();
+                    var parsedCommands = _commandParser.ParseCommands(string.Join(Environment.NewLine, commands));
+                    foreach (var command in parsedCommands)
+                    {
+                        command.Execute(_canvasRenderer, context);
+                    }
+                });
+
+                threads.Add(thread);
+                thread.Start();
+            }
+
+            // Wait for all threads to complete
+            foreach (var thread in threads)
+            {
+                thread.Join();
+            }
+
+            return Task.CompletedTask; // Return a completed task
         }
+
+
 
 
         public bool CheckSyntax(string commands, out string errorMessage)

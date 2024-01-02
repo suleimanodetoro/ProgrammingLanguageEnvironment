@@ -41,6 +41,9 @@ namespace ProgrammingLanguageEnvironment
         private Bitmap mainBitmap;
         private Bitmap cursorBitmap;
 
+        private readonly object renderLock = new object();
+
+
         /// <summary>
         /// Initializes a new instance of the CanvasRenderer class.
         /// </summary>
@@ -134,15 +137,21 @@ namespace ProgrammingLanguageEnvironment
 
         public void MoveTo(Point target)
         {
-            if (canvas.InvokeRequired)
+            lock (renderLock)  // Locking to ensure thread-safe access
             {
-                canvas.Invoke(new Action(() => MoveToInternal(target)));
-            }
-            else
-            {
-                MoveToInternal(target);
+                if (canvas.InvokeRequired)
+                {
+                    canvas.Invoke(new Action(() => MoveToInternal(target)));
+                }
+                else
+                {
+                    MoveToInternal(target);
+                }
             }
         }
+
+
+
 
         /// <summary>
         /// Moves the current position of the drawing pointer to the specified target location.
@@ -151,7 +160,7 @@ namespace ProgrammingLanguageEnvironment
         private void MoveToInternal(Point target)
         {
             currentPosition = target;
-            DrawPointer(currentPosition);
+            DrawPointer(currentPosition);  // This already checks for InvokeRequired internally
         }
 
         /// <summary>
@@ -163,13 +172,16 @@ namespace ProgrammingLanguageEnvironment
         /// <param name="fill">Whether the circle is filled.</param>
         public void DrawCircle(int radius, Color color, Point position, bool fill)
         {
-            if (canvas.InvokeRequired)
+            lock (renderLock)  // Locking to ensure thread-safe access
             {
-                canvas.Invoke(new Action(() => DrawCircleInternal(radius, color, position, fill)));
-            }
-            else
-            {
-                DrawCircleInternal(radius, color, position, fill);
+                if (canvas.InvokeRequired)
+                {
+                    canvas.Invoke(new Action(() => DrawCircleInternal(radius, color, position, fill)));
+                }
+                else
+                {
+                    DrawCircleInternal(radius, color, position, fill);
+                }
             }
         }
 
@@ -205,15 +217,19 @@ namespace ProgrammingLanguageEnvironment
         /// <param name="color">The color of the line.</param>
         public void DrawLine(Point startPoint, Point endPoint, Color color)
         {
-            if (canvas.InvokeRequired)
+            lock (renderLock)  // Locking to ensure thread-safe access
             {
-                canvas.Invoke(new Action(() => DrawLineInternal(startPoint, endPoint, color)));
-            }
-            else
-            {
-                DrawLineInternal(startPoint, endPoint, color);
+                if (canvas.InvokeRequired)
+                {
+                    canvas.Invoke(new Action(() => DrawLineInternal(startPoint, endPoint, color)));
+                }
+                else
+                {
+                    DrawLineInternal(startPoint, endPoint, color);
+                }
             }
         }
+        
 
         /// <summary>
         /// Draws a line between two points.
@@ -242,13 +258,16 @@ namespace ProgrammingLanguageEnvironment
 
         public void DrawRectangle(int width, int height, Color color, Point position, bool fill)
         {
-            if (canvas.InvokeRequired)
+            lock (renderLock) // Locking to ensure thread-safe access
             {
-                canvas.Invoke(new Action(() => DrawRectangleInternal(width, height, color, position, fill)));
-            }
-            else
-            {
-                DrawRectangleInternal(width, height, color, position, fill);
+                if (canvas.InvokeRequired)
+                {
+                    canvas.Invoke(new Action(() => DrawRectangleInternal(width, height, color, position, fill)));
+                }
+                else
+                {
+                    DrawRectangleInternal(width, height, color, position, fill);
+                }
             }
         }
 
@@ -283,13 +302,16 @@ namespace ProgrammingLanguageEnvironment
         /// <param name="fill">Whether the triangle is filled.</param>
         public void DrawEquilateralTriangle(Point[] vertices, Color color, bool fill)
         {
-            if (canvas.InvokeRequired)
+            lock (renderLock) // Locking to ensure thread-safe access
             {
-                canvas.Invoke(new Action(() => DrawEquilateralTriangleInternal(vertices, color, fill)));
-            }
-            else
-            {
-                DrawEquilateralTriangleInternal(vertices, color, fill);
+                if (canvas.InvokeRequired)
+                {
+                    canvas.Invoke(new Action(() => DrawEquilateralTriangleInternal(vertices, color, fill)));
+                }
+                else
+                {
+                    DrawEquilateralTriangleInternal(vertices, color, fill);
+                }
             }
         }
 
@@ -319,15 +341,19 @@ namespace ProgrammingLanguageEnvironment
         /// <param name="color">The color to set the pen.</param>
         public void SetPenColor(Color color)
         {
-            if (canvas.InvokeRequired)
+            lock (renderLock)  // Locking to ensure thread-safe access
             {
-                canvas.Invoke(new Action(() => currentColor = color));
-            }
-            else
-            {
-                currentColor = color;
+                if (canvas.InvokeRequired)
+                {
+                    canvas.Invoke(new Action(() => currentColor = color));
+                }
+                else
+                {
+                    currentColor = color;
+                }
             }
         }
+
 
         /// <summary>
         /// Sets whether shapes are filled when drawn.
@@ -335,15 +361,19 @@ namespace ProgrammingLanguageEnvironment
         /// <param name="fill">True to fill shapes, false otherwise.</param>
         public void SetFill(bool fill)
         {
-            if (canvas.InvokeRequired)
+            lock (renderLock)  // Locking to ensure thread-safe access
             {
-                canvas.Invoke(new Action(() => fillShapes = fill));
-            }
-            else
-            {
-                fillShapes = fill;
+                if (canvas.InvokeRequired)
+                {
+                    canvas.Invoke(new Action(() => fillShapes = fill));
+                }
+                else
+                {
+                    fillShapes = fill;
+                }
             }
         }
+
 
         /// <summary>
         /// Resets the current position of the drawing pointer to the top-left corner of the canvas.
