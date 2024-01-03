@@ -124,14 +124,21 @@ namespace ProgrammingLanguageEnvironment
                             commands.Add(command);
                     }
 
-                } catch (CommandException)
+                }
+                catch (InvalidCommandException ex)
                 {
-                    throw;
-
-                } catch (Exception ex)
+                    // Rethrow with line information
+                    throw new CommandException($"Invalid command on line {lineNumber}: {ex.Message}", lineNumber, line);
+                }
+                catch (InvalidParameterException ex)
                 {
-                    // Include the type of the original exception, message, and line number
-                    throw new CommandException($"[{ex.GetType().Name}] {ex.Message}", lineNumber, line);
+                    // Rethrow with line information
+                    throw new CommandException($"Invalid parameter on line {lineNumber}: {ex.Message}", lineNumber, line);
+                }
+                catch (Exception ex)
+                {
+                    // Catch all other exceptions and rethrow them as CommandExceptions
+                    throw new CommandException($"Error on line {lineNumber}: {ex.Message}", lineNumber, line);
                 }
 
             }

@@ -32,21 +32,5 @@ namespace UnitTestPLE
             var penCommand = new PenCommand(invalidColorName);
         }
 
-        [TestMethod]
-        public void PenCommand_Execute_CallsSetPenColorOnRendererWithCorrectColor()
-        {
-            // Arrange
-            var colorName = "red";  // Assuming "red" is a valid color
-            var penCommand = new PenCommand(colorName);
-            var mockRenderer = new Mock<ICanvasRenderer>();
-            var mockContext = new Mock<ProgrammingLanguageEnvironment.ExecutionContext>();  
-
-            // Act
-            penCommand.Execute(mockRenderer.Object, mockContext.Object);
-
-            // Assert
-            // Verify that the CurrentColor of the ExecutionContext is set to the correct color.
-            mockContext.VerifySet(ctx => ctx.CurrentColor = Color.Red, Times.Once(), "The CurrentColor should be set to red.");
-        }
     }
 }

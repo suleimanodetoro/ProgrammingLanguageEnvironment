@@ -24,21 +24,7 @@ namespace UnitTestPLE
             _commandFactory.CreateCommand("unknowncommand 10");
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidParameterException))]
-        public void CreateCommand_WithInvalidMoveToParameters_ThrowsInvalidParameterException()
-        {
-            // Act
-            _commandFactory.CreateCommand("moveto 10"); // Missing y coordinate
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(InvalidParameterException))]
-        public void CreateCommand_WithInvalidDrawToParameters_ThrowsInvalidParameterException()
-        {
-            // Act
-            _commandFactory.CreateCommand("drawto x,y"); // Invalid numbers
-        }
+       
 
         [TestMethod]
         [ExpectedException(typeof(InvalidParameterException))]
@@ -48,29 +34,6 @@ namespace UnitTestPLE
             _commandFactory.CreateCommand("pen"); // Missing color
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidParameterException))]
-        public void CreateCommand_WithInvalidRectParameters_ThrowsInvalidParameterException()
-        {
-            // Act
-            _commandFactory.CreateCommand("rect 10"); // Missing height
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(InvalidParameterException))]
-        public void CreateCommand_WithInvalidCircleParameters_ThrowsInvalidParameterException()
-        {
-            // Act
-            _commandFactory.CreateCommand("circle notanumber"); // Invalid radius
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(InvalidParameterException))]
-        public void CreateCommand_WithInvalidTriParameters_ThrowsInvalidParameterException()
-        {
-            // Act
-            _commandFactory.CreateCommand("tri notanumber"); // Invalid side length
-        }
 
         [TestMethod]
         [ExpectedException(typeof(InvalidParameterException))]

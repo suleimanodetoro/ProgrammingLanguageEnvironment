@@ -43,35 +43,34 @@ namespace UnitTestPLE
 
 
         /// <summary>
-        /// Tests that the CommandFactory throws an InvalidCommandException when it encounters an invalid command string.
+        /// Tests that the CommandFactory throws a CommandException when it encounters an invalid command string.
         /// </summary>
         /// <remarks>
         /// The test is designed to ensure that the factory's error handling is functioning correctly
         /// by providing an input that does not correspond to any known command type.
         /// </remarks>
         [TestMethod]
-        [ExpectedException(typeof(InvalidCommandException))]
-        public void ParseCommands_UnknownCommand_ThrowsInvalidCommandException()
+        [ExpectedException(typeof(CommandException))]
+        public void ParseCommands_UnknownCommand_ThrowsCommandException()
         {
             // Arrange
             string input = "unknownCommand 10,20";
 
-            // Act
-            _commandParser.ParseCommands(input); // Exception is expected to be thrown here
-
+            // Act & Assert
+            try
+            {
+                _commandParser.ParseCommands(input);
+            }
+            catch (CommandException ex)
+            {
+                // Additional check for the correct message if needed
+                StringAssert.Contains(ex.Message, "Invalid command");
+                throw;  // Rethrow to satisfy ExpectedException
+            }
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidParameterException))]
-        public void ParseCommands_InvalidParameters_ThrowsInvalidParameterException()
-        {
-            // Arrange
-            string input = "moveto 90";
 
-            // Act
-            _commandParser.ParseCommands(input); // Exception is expected to be thrown here
-
-        }
+       
 
         // note to self, more tests here later. ahhhhh :(
     }

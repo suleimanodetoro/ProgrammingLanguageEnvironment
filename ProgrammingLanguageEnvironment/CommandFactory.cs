@@ -52,7 +52,7 @@ namespace ProgrammingLanguageEnvironment
                     break;
 
                 case "moveto":
-                    // ... existing validation ...
+                    
                     var moveToArgs = args[0].Split(',');
                     // moveToArgs now represent either variable names or direct coordinates
                     return new MoveToCommand(moveToArgs[0], moveToArgs[1]);
