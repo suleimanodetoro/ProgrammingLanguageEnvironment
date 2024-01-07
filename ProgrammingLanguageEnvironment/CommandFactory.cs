@@ -31,6 +31,15 @@ namespace ProgrammingLanguageEnvironment
             }
             var commandName = parts[0].ToLower();
             var args = parts.Skip(1).ToArray();
+            if (commandLine.StartsWith("int[]")) // Check if it's an array definition
+            {
+                var arrayParts = commandLine.Split(new[] { '=' }, 2); // Split into name and value parts, renamed variable here
+                var namePart = arrayParts[0].Trim();
+                var arrayName = namePart.Split(new[] { ' ' }, 2)[1]; // Get the array name
+                var valuesPart = arrayParts[1].Trim().Trim('{', '}');
+                var values = valuesPart.Split(',').Select(int.Parse).ToArray();
+                return new CreateIntArrayCommand(arrayName, values);
+            }
 
             // Process the command line based on the command name.
             switch (commandName)

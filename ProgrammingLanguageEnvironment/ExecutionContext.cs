@@ -11,6 +11,9 @@ namespace ProgrammingLanguageEnvironment
     /// </summary>
     public class ExecutionContext
     {
+        // Add a new dictionary to store integer arrays.
+
+        public Dictionary<string, int[]> IntArrays { get; private set; } = new Dictionary<string, int[]>();
         /// <summary>Keeps track of variable values within the script.</summary>
         public Dictionary<string, int> Variables { get; private set; } = new Dictionary<string, int>();
 
@@ -35,6 +38,37 @@ namespace ProgrammingLanguageEnvironment
         /// <summary>Determines whether shapes are filled or not.</summary>
         public bool FillShapes { get; set; } = false;
 
+
+        // Methods for handling integer arrays
+        public void CreateIntArray(string arrayName, int[] initialValues)
+        {
+            if (IntArrays.ContainsKey(arrayName))
+                throw new Exception($"Array '{arrayName}' already exists.");
+
+            IntArrays[arrayName] = initialValues;
+        }
+
+        public int GetIntArrayElement(string arrayName, int index)
+        {
+            if (!IntArrays.TryGetValue(arrayName, out var array))
+                throw new Exception($"Array '{arrayName}' not found.");
+
+            if (index < 0 || index >= array.Length)
+                throw new Exception($"Index '{index}' out of bounds for array '{arrayName}'.");
+
+            return array[index];
+        }
+
+        public void SetIntArrayElement(string arrayName, int index, int value)
+        {
+            if (!IntArrays.TryGetValue(arrayName, out var array))
+                throw new Exception($"Array '{arrayName}' not found.");
+
+            if (index < 0 || index >= array.Length)
+                throw new Exception($"Index '{index}' out of bounds for array '{arrayName}'.");
+
+            array[index] = value;
+        }
         /// <summary>Sets the value of a variable.</summary>
         /// <param name="name">The variable's name.</param>
         /// <param name="value">The value to set.</param>

@@ -23,6 +23,17 @@ namespace ProgrammingLanguageEnvironment
         {
             commandFactory = new CommandFactory();
         }
+        private Command ParseArrayDefinition(string arrayDefinition)
+        {
+            // Assume arrayDefinition is like "int[] nums = {12,123,132,1200}"
+            var parts = arrayDefinition.Split(new[] { ' ' }, 4); // Split into "int[]", "nums", "=", "{12,123,132,1200}"
+            var arrayName = parts[1]; // "nums"
+            var initialValuesString = parts[3].Trim('{', '}'); // "12,123,132,1200"
+            var initialValues = initialValuesString.Split(',').Select(int.Parse).ToArray();
+
+            return new CreateIntArrayCommand(arrayName, initialValues);
+        }
+
 
         /// <summary>
         /// Parses a string containing raw input commands into a list of executable Command objects.
@@ -53,7 +64,14 @@ namespace ProgrammingLanguageEnvironment
                 string trimmedLine = line.Trim();
                 try
                 {
-                    if (trimmedLine.StartsWith("while"))
+                    // Check if this line defines an array
+                    if (trimmedLine.StartsWith("int[]"))
+                    {
+                        // Parse the array definition and create a command for it
+                        var arrayCommand = ParseArrayDefinition(trimmedLine);
+                        commands.Add(arrayCommand);
+                    }
+                    else if (trimmedLine.StartsWith("while"))
                     {
                         isInsideLoop = true;
                         loopCondition = trimmedLine.Substring("while".Length).Trim();
