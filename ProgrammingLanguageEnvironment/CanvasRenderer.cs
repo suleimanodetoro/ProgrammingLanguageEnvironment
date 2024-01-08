@@ -43,6 +43,9 @@ namespace ProgrammingLanguageEnvironment
 
         private readonly object renderLock = new object();
 
+        // New structure to hold positions per program
+        private Dictionary<int, Point> pointerPositions = new Dictionary<int, Point>();
+
 
         /// <summary>
         /// Initializes a new instance of the CanvasRenderer class.

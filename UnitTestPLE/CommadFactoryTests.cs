@@ -4,17 +4,26 @@ using System;
 
 namespace UnitTestPLE
 {
+    /// <summary>
+    /// Test class for CommandFactory.
+    /// </summary>
     [TestClass]
     public class CommandFactoryTests
     {
         private CommandFactory factory;
 
+        /// <summary>
+        /// Setup method for tests, initializes CommandFactory.
+        /// </summary>
         [TestInitialize]
         public void Setup()
         {
             factory = new CommandFactory();
         }
 
+        /// <summary>
+        /// Test to ensure a MoveToCommand is created for valid input.
+        /// </summary>
         [TestMethod]
         public void CommandFactory_CreatesMoveToCommand_ForValidMoveToInput()
         {
@@ -29,6 +38,9 @@ namespace UnitTestPLE
             Assert.IsInstanceOfType(command, typeof(MoveToCommand), "The command created should be an instance of MoveToCommand.");
         }
 
+        /// <summary>
+        /// Test to ensure a DrawToCommand is created for valid input.
+        /// </summary>
         [TestMethod]
         public void CommandFactory_CreatesDrawToCommand_ForValidDrawToInput()
         {
@@ -43,6 +55,9 @@ namespace UnitTestPLE
             Assert.IsInstanceOfType(command, typeof(DrawToCommand), "The command created should be an instance of DrawToCommand.");
         }
 
+        /// <summary>
+        /// Test to ensure a CircleCommand is created for valid input.
+        /// </summary>
         [TestMethod]
         public void CommandFactory_CreatesCircleCommand_ForValidCircleInput()
         {
@@ -57,6 +72,9 @@ namespace UnitTestPLE
             Assert.IsInstanceOfType(command, typeof(CircleCommand), "The command created should be an instance of CircleCommand.");
         }
 
+        /// <summary>
+        /// Test to ensure a RectangleCommand is created for valid input.
+        /// </summary>
         [TestMethod]
         public void CommandFactory_CreatesRectCommand_ForValidRectInput()
         {
@@ -71,6 +89,9 @@ namespace UnitTestPLE
             Assert.IsInstanceOfType(command, typeof(RectangleCommand), "The command created should be an instance of RectangleCommand.");
         }
 
+        /// <summary>
+        /// Test to ensure an exception is thrown for invalid input.
+        /// </summary>
         [TestMethod]
         [ExpectedException(typeof(InvalidCommandException))]
         public void CommandFactory_ThrowsException_ForInvalidInput()

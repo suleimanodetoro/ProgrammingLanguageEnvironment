@@ -22,7 +22,8 @@ namespace ProgrammingLanguageEnvironment
         {
             // Split the command string into command name and arguments.
             var parts = commandLine.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-            // Inside the CreateCommand method
+
+            // Inside the CreateCommand method, here's how we handle expressions
             if (parts.Length >= 3 && parts[1] == "=")
             {
                 string variableName = parts[0];
@@ -65,8 +66,6 @@ namespace ProgrammingLanguageEnvironment
                     var moveToArgs = args[0].Split(',');
                     // moveToArgs now represent either variable names or direct coordinates
                     return new MoveToCommand(moveToArgs[0], moveToArgs[1]);
-
-
 
                 case "drawto":
                     var drawToArgs = args[0].Split(',');

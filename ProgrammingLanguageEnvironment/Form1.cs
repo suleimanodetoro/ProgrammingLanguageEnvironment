@@ -10,6 +10,8 @@ namespace ProgrammingLanguageEnvironment
         private List<IEnumerable<string>> _loadedCommands = new List<IEnumerable<string>>();
         private readonly CommandParser _commandParser; 
         private readonly ICanvasRenderer _canvasRenderer;
+        private ExecutionContext _context;
+
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CommandParserForm"/> class.
@@ -25,6 +27,8 @@ namespace ProgrammingLanguageEnvironment
 
             // Instantiate the command service with the parser and renderer
             _commandService = new CommandService(_commandParser, _canvasRenderer);
+            // Initialize ExecutionContext here
+            _context = new ExecutionContext();
 
             // Instantiate the file service
             _fileService = new FileService();
@@ -41,24 +45,30 @@ namespace ProgrammingLanguageEnvironment
         /// </summary>
         /// <param name="commandLists">A list of command sets, where each set represents a sequence of commands.</param>
         /// <returns>A task that represents the asynchronous operation of executing commands in parallel.</returns>
-        private async Task ExecuteCommandsInParallel(List<IEnumerable<string>> commandLists)
+        private void ExecuteCommandsInParallel(List<IEnumerable<string>> commandLists)
         {
-            var tasks = commandLists.Select(commands =>
+            foreach (var commands in commandLists)
             {
-                return Task.Run(() =>
+                // Start a new thread for each command set
+                Thread thread = new Thread(() =>
                 {
                     ExecutionContext context = new ExecutionContext();
                     var parsedCommands = _commandParser.ParseCommands(string.Join(Environment.NewLine, commands));
                     foreach (var command in parsedCommands)
                     {
-                        // Access to _canvasRenderer might need synchronization for thread safety
-                        command.Execute(_canvasRenderer, context);
+                        // Use Invoke to marshal the call to the UI thread for any UI updates
+                        canvas.Invoke((MethodInvoker)delegate
+                        {
+                            command.Execute(_canvasRenderer, context);
+                            Thread.Sleep(500); // Sleep for 500 milliseconds to see the drawing
+                        });
                     }
                 });
-            });
-
-            await Task.WhenAll(tasks);
+                thread.Start();
+            }
         }
+
+
 
 
         /// <summary>
@@ -68,20 +78,22 @@ namespace ProgrammingLanguageEnvironment
         /// <param name="e">Event data.</param>
         private void RunButton_Click(object? sender, EventArgs e)
         {
-            // Delegate command execution to CommandService
             string commands = multiLineCommand.Text + Environment.NewLine + singleLineInput.Text;
+
+            // Optionally reset the context if you need a fresh state for every run
+            // _context = new ExecutionContext(); // Uncomment this line if you want to reset the context for every run.
+
             try
             {
-                _commandService.ExecuteCommands(commands);
+                _commandService.ExecuteCommands(commands, _context);
             }
             catch (Exception ex)
             {
-                // Handle the error, e.g., display a message on your canvas or in a message box
-                // Syntax is not correct so display the error message
                 _commandService.ClearCanvas();
                 _commandService.DisplayMessage(ex.Message);
             }
         }
+
 
 
         /// <summary>
@@ -203,18 +215,18 @@ namespace ProgrammingLanguageEnvironment
 
         }
 
-        
+
 
         /// <summary>
         /// Executes commands in parallel when the 'Run Parallel' button is clicked.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">Event data.</param>
-        private async void runParallelButton_Click(object sender, EventArgs e)
+        private void runParallelButton_Click(object sender, EventArgs e)
         {
-            await Console.Out.WriteLineAsync("This button is working");
-            await ExecuteCommandsInParallel(_loadedCommands);
-
+            Console.Out.WriteLineAsync("This button is working");
+            ExecuteCommandsInParallel(_loadedCommands);
         }
+
     }
 }

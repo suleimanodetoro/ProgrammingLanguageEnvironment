@@ -16,9 +16,8 @@ namespace ProgrammingLanguageEnvironment
             _canvasRenderer = canvasRenderer;
         }
 
-        public void ExecuteCommands(string commands)
+        public void ExecuteCommands(string commands, ExecutionContext context)
         {
-            ExecutionContext context = new ExecutionContext();
             var parsedCommands = _commandParser.ParseCommands(commands);
             foreach (var command in parsedCommands)
             {

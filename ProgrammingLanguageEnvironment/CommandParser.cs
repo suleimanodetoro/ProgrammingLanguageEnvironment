@@ -119,7 +119,6 @@ namespace ProgrammingLanguageEnvironment
                         // Add MethodCommand to the main commands list for execution
                         commands.Add(methodCommand);
 
-                        //context.AddMethod(methodCommand);
                     }
 
                     else if (trimmedLine.Contains("(") && trimmedLine.Contains(")"))
